@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_single_line_height"
+    >
+
+    <ImageView
+        android:id="@+id/iv_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_icon_margin_left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:srcCompat="@drawable/ic_icon_ingredient" />
+
+    <TextView
+        android:id="@+id/tv_ingredient"
+        style="@style/ListSingleLineText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/list_text_end_icon_padding"
+        android:layout_marginStart="@dimen/list_content_margin_left"
+        app:layout_constraintBottom_toTopOf="@+id/iv_ingredient"
+        app:layout_constraintEnd_toStartOf="@+id/cb_ingredient_state"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_ingredient"
+        tools:text="TextView" />
+
+    <CheckBox
+        android:id="@+id/cb_ingredient_state"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginEnd="@dimen/list_content_margin_right"
+        android:button="@null"
+        android:background="@drawable/ic_cross_black"
+        app:layout_constraintBottom_toTopOf="@+id/tv_ingredient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ingredient"
+         />
+</android.support.constraint.ConstraintLayout>

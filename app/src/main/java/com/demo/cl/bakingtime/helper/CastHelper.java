@@ -51,6 +51,11 @@ public class CastHelper {
                         return NO_PICTURE;
                     }
                 }
+
+                @Override
+                public RecipesBean get(int position) {
+                    return recipesBeans.get(position);
+                }
             };
     }
 }

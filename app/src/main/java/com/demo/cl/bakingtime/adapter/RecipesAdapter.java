@@ -1,6 +1,8 @@
 package com.demo.cl.bakingtime.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -12,7 +14,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.demo.cl.bakingtime.Interface.RecipeListModel;
 import com.demo.cl.bakingtime.R;
+import com.demo.cl.bakingtime.data.Constant;
+import com.demo.cl.bakingtime.data.RecipesBean;
+import com.demo.cl.bakingtime.helper.EventHelper;
+import com.demo.cl.bakingtime.ui.RecipeDetailActivity;
+import com.demo.cl.bakingtime.ui.RecipesActivity;
 import com.demo.cl.bakingtime.widget.DynamicHeightImageView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +41,7 @@ public class RecipesAdapter extends RecyclerView.Adapter {
     private RecipeListModel recipeListModel;
     private String TAG="RecipesAdapter";
     private Context context;
+    private List<RecipesBean> recipesBeans;
 
     public RecipesAdapter(RecipeListModel recipeListModel,Context context) {
         this.recipeListModel = recipeListModel;
@@ -87,6 +102,11 @@ public class RecipesAdapter extends RecyclerView.Adapter {
         public RecipeWithPictureViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(view -> {
+                Intent intent=new Intent(context, RecipeDetailActivity.class);
+                EventBus.getDefault().postSticky(EventHelper.create().buildRecipesBeanMessage((RecipesBean) recipeListModel.get(getAdapterPosition())));
+                context.startActivity(intent);
+            });
         }
     }
 
@@ -99,6 +119,15 @@ public class RecipesAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, itemView);
 
         }
+    }
+
+
+    public List<RecipesBean> getRecipesBeans() {
+        return recipesBeans;
+    }
+
+    public void setRecipesBeans(List<RecipesBean> recipesBeans) {
+        this.recipesBeans = recipesBeans;
     }
 
 }

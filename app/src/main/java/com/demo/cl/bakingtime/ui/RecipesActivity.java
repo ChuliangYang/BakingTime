@@ -13,7 +13,10 @@ import com.demo.cl.bakingtime.adapter.RecipesAdapter;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.databinding.ActivityRecipeListBinding;
 import com.demo.cl.bakingtime.helper.CastHelper;
+import com.demo.cl.bakingtime.helper.EventHelper;
 import com.demo.cl.bakingtime.request.RecipeListRequest;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -35,7 +38,7 @@ public class RecipesActivity extends AppCompatActivity implements OnRecipeListRe
         rvRecipe=viewBinding.rvRecipe;
 
         new RecipeListRequest(this).start();
-        // TODO: 9/16/17 没有图片的情况下itemview需要保持一样的尺寸
+        //TODO: 9/16/17 没有图片的情况下itemview需要保持一样的尺寸
         rvRecipe.setLayoutManager(new GridLayoutManager(this,getResources().getInteger(R.integer.GridNumber)));
         rvRecipe.setHasFixedSize(true);
     }
@@ -47,6 +50,7 @@ public class RecipesActivity extends AppCompatActivity implements OnRecipeListRe
         Single.create((SingleOnSubscribe<RecipesAdapter>) e -> {
             recipeListModel=CastHelper.RecipesBeanToRecipeListModel(recipesBeans);
             recipesAdapter=new RecipesAdapter(recipeListModel,this);
+            recipesAdapter.setRecipesBeans(recipesBeans);
             e.onSuccess(recipesAdapter);
         }).subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(recipesAdapter1 -> rvRecipe.setAdapter(recipesAdapter));

@@ -16,4 +16,5 @@ public interface RecipeListModel {
     int getRecipeCounts();
     @Nullable Object getRecipePicture(int position);
     int getPictureType(int position);
+    Object get(int position);
 }

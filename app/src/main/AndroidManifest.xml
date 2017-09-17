@@ -13,12 +13,13 @@
         android:theme="@style/AppTheme"
         android:name=".MyApplication"
         >
-        <activity android:name=".ui.RecipesActivity">
+        <activity android:name=".ui.RecipesActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.RecipeDetailActivity" android:launchMode="singleTop"/>
     </application>
 
 </manifest>

@@ -9,4 +9,7 @@ public class Constant {
     public static  class NetWork{
         public static String SERVER_URL="https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     }
+    public static class DataKey{
+        public static String RECIPE_BEAN="recipeBean";
+    }
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout >
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/cd_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.demo.cl.bakingtime.ui.RecipesActivity">
+
+        >
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         style="@style/MyAppbarLayout"
@@ -17,19 +18,17 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            android:layout_height="?actionBarSize"
+            style="?actionBarStyle"
             app:layout_scrollFlags="scroll|enterAlways"
             app:title="@string/app_name" />
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recipe"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="565dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layout_editor_absoluteY="58dp" />
     </android.support.design.widget.CoordinatorLayout>
 </layout>
