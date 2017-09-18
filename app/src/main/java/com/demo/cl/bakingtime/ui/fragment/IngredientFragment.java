@@ -10,6 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.demo.cl.bakingtime.R;
+import com.demo.cl.bakingtime.adapter.IngredientAdapter;
+import com.demo.cl.bakingtime.data.RecipesBean;
+import com.demo.cl.bakingtime.helper.EventHelper;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +27,7 @@ public class IngredientFragment extends Fragment {
 
     @BindView(R.id.rv_ingredient)
     RecyclerView rvIngredient;
+    private RecipesBean recipesBean;
 
     public IngredientFragment() {
     }
@@ -29,6 +35,7 @@ public class IngredientFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        recipesBean=EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
     }
 
     @Nullable
@@ -38,8 +45,14 @@ public class IngredientFragment extends Fragment {
         ButterKnife.bind(this, contentView);
         rvIngredient.setHasFixedSize(true);
         rvIngredient.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-        // TODO: 9/16/17 关联adapter
+
+        IngredientAdapter ingredientAdapter=new IngredientAdapter(recipesBean,getContext());
+        rvIngredient.setAdapter(ingredientAdapter);
         return contentView;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 }

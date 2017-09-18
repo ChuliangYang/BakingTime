@@ -5,6 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_single_line_height"
+    android:foreground="?android:attr/selectableItemBackground"
     >
 
     <ImageView
@@ -34,12 +35,13 @@
     <CheckBox
         android:id="@+id/cb_ingredient_state"
         android:layout_width="wrap_content"
-        android:layout_height="22dp"
+        android:layout_height="25dp"
         android:layout_marginEnd="@dimen/list_content_margin_right"
         android:button="@null"
         android:background="@drawable/ic_cross_black"
         app:layout_constraintBottom_toTopOf="@+id/tv_ingredient"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_ingredient"
+        android:checked="false"
          />
 </android.support.constraint.ConstraintLayout>

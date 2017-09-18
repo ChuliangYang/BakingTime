@@ -5,7 +5,7 @@
     android:viewportWidth="24.0">
     <group android:name="check">
         <path
-            android:name="check_path"
+            android:name="@string/check_path_name"
             android:pathData="M4.8,13.4 L9,17.6 M10.4,16.2 L19.6,7"
             android:strokeColor="#48f242"
             android:strokeWidth="2" />

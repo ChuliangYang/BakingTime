@@ -5,7 +5,7 @@
     android:viewportWidth="24.0">
     <group android:name="cross">
         <path
-            android:name="cross_path"
+            android:name="@string/cross_path_name"
             android:pathData="M6.4,6.4 L17.6,17.6 M6.4,17.6 L17.6,6.4"
             android:strokeColor="@color/colorAccent"
             android:strokeWidth="2" />

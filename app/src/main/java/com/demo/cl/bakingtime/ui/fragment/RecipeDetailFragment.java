@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 
 import com.demo.cl.bakingtime.R;
 import com.demo.cl.bakingtime.adapter.RecipeDetailAdapter;
+import com.demo.cl.bakingtime.data.RecipesBean;
+import com.demo.cl.bakingtime.helper.EventHelper;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +46,9 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.recipe_detail, container, false);
         ButterKnife.bind(this, contentView);
-        tbRecipeDetail.setTitle("");
+        RecipesBean recipesBean = EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
+        tbRecipeDetail.setTitle(recipesBean.getName());
+        tbRecipeDetail.setNavigationOnClickListener(view -> getActivity().finish());
         recipeDetailAdapter=new RecipeDetailAdapter(getChildFragmentManager());
         vpRecipe.setAdapter(recipeDetailAdapter);
         tlRecipe.setupWithViewPager(vpRecipe);

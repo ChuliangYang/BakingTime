@@ -1,6 +1,8 @@
 package com.demo.cl.bakingtime.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ public class IngredientAdapter extends RecyclerView.Adapter {
     }
 
     @Override
+
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new IngredientViewHolder(LayoutInflater.from(context).inflate(R.layout.item_ingredient, parent, false));
     }
@@ -46,7 +49,7 @@ public class IngredientAdapter extends RecyclerView.Adapter {
         return recipesBean != null ? recipesBean.getIngredients().size() : 0;
     }
 
-    private class IngredientViewHolder extends RecyclerView.ViewHolder {
+    public class IngredientViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_ingredient)
         ImageView ivIngredient;
         @BindView(R.id.tv_ingredient)
@@ -56,6 +59,18 @@ public class IngredientAdapter extends RecyclerView.Adapter {
         public IngredientViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+
+            cb_ingredient_state.setOnCheckedChangeListener((compoundButton, b) -> {
+                if (b) {
+                    cb_ingredient_state.setBackgroundResource(R.drawable.cross_to_tick_anim);
+                    ((AnimatedVectorDrawable)(cb_ingredient_state.getBackground())).start();
+                } else {
+                    cb_ingredient_state.setBackgroundResource(R.drawable.tick_to_cross_anim);
+                    ((AnimatedVectorDrawable)(cb_ingredient_state.getBackground())).start();
+                }
+            });
+
+            itemView.setOnClickListener(view ->cb_ingredient_state.performClick() );
         }
     }
 }
