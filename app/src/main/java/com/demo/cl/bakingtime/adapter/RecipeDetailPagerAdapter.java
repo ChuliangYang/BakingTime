@@ -5,14 +5,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.demo.cl.bakingtime.ui.fragment.IngredientFragment;
+import com.demo.cl.bakingtime.ui.fragment.StepsFragment;
 
 /**
  * Created by CL on 9/16/17.
  */
 
-public class RecipeDetailAdapter extends FragmentStatePagerAdapter {
+public class RecipeDetailPagerAdapter extends FragmentStatePagerAdapter {
 
-    public RecipeDetailAdapter(FragmentManager fm) {
+    public RecipeDetailPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -22,8 +23,7 @@ public class RecipeDetailAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new IngredientFragment();
             case 1:
-                // TODO: 9/17/17 步骤fragment
-                return new Fragment();
+                return new StepsFragment();
         }
         return new Fragment();
     }

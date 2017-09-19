@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.demo.cl.bakingtime.R;
-import com.demo.cl.bakingtime.adapter.RecipeDetailAdapter;
+import com.demo.cl.bakingtime.adapter.RecipeDetailPagerAdapter;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.helper.EventHelper;
 
@@ -31,10 +31,7 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment {
     TabLayout tlRecipe;
     @BindView(R.id.vp_recipe)
     ViewPager vpRecipe;
-    private RecipeDetailAdapter recipeDetailAdapter;
-
-    public RecipeDetailFragment() {
-    }
+    private RecipeDetailPagerAdapter recipeDetailPagerAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,15 +46,9 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment {
         RecipesBean recipesBean = EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
         tbRecipeDetail.setTitle(recipesBean.getName());
         tbRecipeDetail.setNavigationOnClickListener(view -> getActivity().finish());
-        recipeDetailAdapter=new RecipeDetailAdapter(getChildFragmentManager());
-        vpRecipe.setAdapter(recipeDetailAdapter);
+        recipeDetailPagerAdapter =new RecipeDetailPagerAdapter(getChildFragmentManager());
+        vpRecipe.setAdapter(recipeDetailPagerAdapter);
         tlRecipe.setupWithViewPager(vpRecipe);
         return contentView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
     }
 }

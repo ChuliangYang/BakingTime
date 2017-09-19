@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.RecipeDetailActivity" android:launchMode="singleTop"/>
+        <activity android:name=".ui.StepDetailActivity" android:launchMode="singleTop"/>
     </application>
 
 </manifest>

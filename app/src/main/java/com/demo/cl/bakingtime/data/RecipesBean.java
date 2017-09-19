@@ -98,7 +98,7 @@ public class RecipesBean implements Parcelable {
         }
     }
 
-    public static class StepsBean {
+    public static class StepsBean implements Parcelable {
 
         private String id;
         private String shortDescription;
@@ -145,6 +145,43 @@ public class RecipesBean implements Parcelable {
         public void setThumbnailURL(String thumbnailURL) {
             this.thumbnailURL = thumbnailURL;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.id);
+            dest.writeString(this.shortDescription);
+            dest.writeString(this.description);
+            dest.writeString(this.videoURL);
+            dest.writeString(this.thumbnailURL);
+        }
+
+        public StepsBean() {
+        }
+
+        protected StepsBean(Parcel in) {
+            this.id = in.readString();
+            this.shortDescription = in.readString();
+            this.description = in.readString();
+            this.videoURL = in.readString();
+            this.thumbnailURL = in.readString();
+        }
+
+        public static final Creator<StepsBean> CREATOR = new Creator<StepsBean>() {
+            @Override
+            public StepsBean createFromParcel(Parcel source) {
+                return new StepsBean(source);
+            }
+
+            @Override
+            public StepsBean[] newArray(int size) {
+                return new StepsBean[size];
+            }
+        };
     }
 
     @Override

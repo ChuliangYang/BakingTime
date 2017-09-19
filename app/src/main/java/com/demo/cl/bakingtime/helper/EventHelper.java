@@ -20,8 +20,9 @@ public class EventHelper {
         return new RecipesBeanMessage(recipesBean);
     }
 
-
-
+    public   StepsBeanMessage buildStepsBeanMessage(int current_position, RecipesBean recipesBean){
+        return new StepsBeanMessage(current_position,recipesBean);
+    }
 
 
 
@@ -39,5 +40,31 @@ public class EventHelper {
         }
 
         RecipesBean recipesBean;
+    }
+
+    public class StepsBeanMessage{
+        private int current_position;
+        private RecipesBean recipesBean;
+
+        public StepsBeanMessage(int current_position, RecipesBean recipesBean) {
+            this.current_position = current_position;
+            this.recipesBean = recipesBean;
+        }
+
+        public int getCurrent_position() {
+            return current_position;
+        }
+
+        public void setCurrent_position(int current_position) {
+            this.current_position = current_position;
+        }
+
+        public RecipesBean getRecipesBean() {
+            return recipesBean;
+        }
+
+        public void setRecipesBean(RecipesBean recipesBean) {
+            this.recipesBean = recipesBean;
+        }
     }
 }

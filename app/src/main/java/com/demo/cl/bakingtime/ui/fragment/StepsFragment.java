@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.demo.cl.bakingtime.R;
-import com.demo.cl.bakingtime.adapter.IngredientAdapter;
+import com.demo.cl.bakingtime.adapter.StepsAdapter;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.helper.EventHelper;
 
@@ -18,33 +18,32 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
- * Created by CL on 9/16/17.
+ * Created by CL on 9/18/17.
  */
 
-public class IngredientFragment extends Fragment {
-
-    @BindView(R.id.rv_ingredient)
-    RecyclerView rvIngredient;
+public class StepsFragment extends Fragment {
+    @BindView(R.id.rv_steps)
+    RecyclerView rvSteps;
     private RecipesBean recipesBean;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recipesBean=EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
+        recipesBean = EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View contentView = inflater.inflate(R.layout.ingredient_page, container, false);
+        View contentView = inflater.inflate(R.layout.steps_page, container, false);
         ButterKnife.bind(this, contentView);
-        rvIngredient.setHasFixedSize(true);
-        rvIngredient.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-
-        IngredientAdapter ingredientAdapter=new IngredientAdapter(recipesBean,getContext());
-        rvIngredient.setAdapter(ingredientAdapter);
+        rvSteps.setHasFixedSize(false);
+        rvSteps.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        StepsAdapter stepsAdapter=new StepsAdapter(recipesBean,getContext());
+        rvSteps.setAdapter(stepsAdapter);
         return contentView;
     }
 

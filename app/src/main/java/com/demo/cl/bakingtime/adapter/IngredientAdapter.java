@@ -42,6 +42,7 @@ public class IngredientAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         IngredientViewHolder ingredientViewHolder= (IngredientViewHolder) holder;
         ingredientViewHolder.tvIngredient.setText(recipesBean.getIngredients().get(position).getIngredient());
+        // TODO: 9/18/17 加上每个原料的数量
     }
 
     @Override

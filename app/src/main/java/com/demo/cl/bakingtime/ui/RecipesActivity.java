@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.demo.cl.bakingtime.Interface.OnRecipeListResponse;
 import com.demo.cl.bakingtime.Interface.RecipeListModel;
 import com.demo.cl.bakingtime.R;
-import com.demo.cl.bakingtime.adapter.RecipesAdapter;
+import com.demo.cl.bakingtime.adapter.RecipeListAdapter;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.databinding.ActivityRecipeListBinding;
 import com.demo.cl.bakingtime.helper.CastHelper;
@@ -28,7 +28,7 @@ import io.reactivex.schedulers.Schedulers;
 public class RecipesActivity extends AppCompatActivity implements OnRecipeListResponse{
      ActivityRecipeListBinding viewBinding;
      RecyclerView rvRecipe;
-     RecipesAdapter recipesAdapter;
+     RecipeListAdapter recipeListAdapter;
      RecipeListModel recipeListModel;
 
     @Override
@@ -47,13 +47,13 @@ public class RecipesActivity extends AppCompatActivity implements OnRecipeListRe
 
     @Override
     public void OnRecipeListResponseSuccess(List<RecipesBean> recipesBeans) {
-        Single.create((SingleOnSubscribe<RecipesAdapter>) e -> {
+        Single.create((SingleOnSubscribe<RecipeListAdapter>) e -> {
             recipeListModel=CastHelper.RecipesBeanToRecipeListModel(recipesBeans);
-            recipesAdapter=new RecipesAdapter(recipeListModel,this);
-            recipesAdapter.setRecipesBeans(recipesBeans);
-            e.onSuccess(recipesAdapter);
+            recipeListAdapter =new RecipeListAdapter(recipeListModel,this);
+            recipeListAdapter.setRecipesBeans(recipesBeans);
+            e.onSuccess(recipeListAdapter);
         }).subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(recipesAdapter1 -> rvRecipe.setAdapter(recipesAdapter));
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(recipeListAdapter1 -> rvRecipe.setAdapter(recipeListAdapter));
     }
 
     @Override

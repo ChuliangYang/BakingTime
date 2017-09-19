@@ -35,15 +35,15 @@ import butterknife.ButterKnife;
  * Created by CL on 9/14/17.
  */
 
-public class RecipesAdapter extends RecyclerView.Adapter {
+public class RecipeListAdapter extends RecyclerView.Adapter {
     private final int WITH_PICTURE = 1;
     private final int WITHOUT_PICTURE = 2;
     private RecipeListModel recipeListModel;
-    private String TAG="RecipesAdapter";
+    private String TAG="RecipeListAdapter";
     private Context context;
     private List<RecipesBean> recipesBeans;
 
-    public RecipesAdapter(RecipeListModel recipeListModel,Context context) {
+    public RecipeListAdapter(RecipeListModel recipeListModel, Context context) {
         this.recipeListModel = recipeListModel;
         this.context=context;
     }

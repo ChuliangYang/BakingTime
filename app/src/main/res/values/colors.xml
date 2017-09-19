@@ -5,4 +5,7 @@
     <color name="colorPrimaryLight">#98caff</color>
     <color name="colorAccent">#CC9966</color>
     <color name="background_scrim">#40000000</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="black_87p">#DE000000</color>
+    <color name="black_38p">#61000000</color>
 </resources>
