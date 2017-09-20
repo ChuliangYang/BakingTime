@@ -2,4 +2,6 @@
     <string name="app_name">Baking Time</string>
     <string name="cross_path_name">cross_path</string>
     <string name="check_path_name">check_path</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
 </resources>

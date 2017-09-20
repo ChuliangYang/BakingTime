@@ -1,8 +1,7 @@
 package com.demo.cl.bakingtime.helper;
 
 import com.demo.cl.bakingtime.data.RecipesBean;
-
-import java.util.List;
+import com.demo.cl.bakingtime.Interface.OnScroll;
 
 /**
  * Created by CL on 9/16/17.
@@ -24,6 +23,9 @@ public class EventHelper {
         return new StepsBeanMessage(current_position,recipesBean);
     }
 
+    public   ScrollMessage buildScrollMessage(OnScroll OnScroll){
+        return new ScrollMessage(OnScroll);
+    }
 
 
     public  class RecipesBeanMessage{
@@ -66,5 +68,22 @@ public class EventHelper {
         public void setRecipesBean(RecipesBean recipesBean) {
             this.recipesBean = recipesBean;
         }
+    }
+
+    public class ScrollMessage{
+        public ScrollMessage(OnScroll OnScroll) {
+            this.OnScroll = OnScroll;
+        }
+
+        public OnScroll getOnScroll() {
+            return OnScroll;
+        }
+
+        public void setOnScroll(OnScroll OnScroll) {
+            this.OnScroll = OnScroll;
+        }
+
+        private OnScroll OnScroll;
+        private int blank;
     }
 }

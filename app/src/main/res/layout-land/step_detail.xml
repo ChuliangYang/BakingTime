@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sv_step_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="0dp"
+    android:layout_marginBottom="0dp"
+    >
+<com.demo.cl.bakingtime.widget.WrapContentViewPager
+    android:id="@+id/wcvp_step_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="0dp"
+    android:layout_marginBottom="0dp"
+     />
+</ScrollView>

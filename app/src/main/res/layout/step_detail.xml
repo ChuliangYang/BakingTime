@@ -12,10 +12,45 @@
         app:navigationIcon="@drawable/ic_arrow_back"
         app:titleTextColor="@android:color/white"
         android:background="?colorPrimary"
+        android:layout_weight="0"
         />
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_step_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+        android:layout_weight="1"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_navigate"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        >
+        <ImageView
+            android:id="@+id/iv_previous"
+            app:srcCompat="@drawable/ic_previous"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_toEndOf="@id/iv_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/previous"/>
+
+        <ImageView
+            android:id="@+id/iv_next"
+            app:srcCompat="@drawable/ic_next"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_toStartOf="@id/iv_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next"/>
+    </RelativeLayout>
 
 </LinearLayout>
