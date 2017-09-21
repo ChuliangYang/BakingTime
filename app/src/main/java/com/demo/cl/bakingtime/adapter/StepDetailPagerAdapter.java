@@ -6,13 +6,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
 
+import com.demo.cl.bakingtime.Interface.OnScroll;
 import com.demo.cl.bakingtime.Interface.OnStepNavigation;
 import com.demo.cl.bakingtime.data.Constant;
 import com.demo.cl.bakingtime.data.RecipesBean;
+import com.demo.cl.bakingtime.helper.EventHelper;
 import com.demo.cl.bakingtime.ui.fragment.StepDetailPageFragment;
 import com.demo.cl.bakingtime.widget.WrapContentViewPager;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by CL on 9/18/17.
@@ -20,6 +25,7 @@ import com.demo.cl.bakingtime.widget.WrapContentViewPager;
 
 public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
 
+    private OnScroll onScroll;
     RecipesBean recipesBean;
 
     OnStepNavigation onStepNavigation;
@@ -31,6 +37,8 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
     public StepDetailPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context=context;
+//        onScroll= EventBus.getDefault().getStickyEvent(EventHelper.ScrollMessage.class).getOnScroll();
+
     }
 
     @Override
@@ -40,13 +48,15 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
         int ori = cf.orientation ; //获取屏幕方向
         if(ori == cf.ORIENTATION_LANDSCAPE){
             if (position != mCurrentPosition) {
-                Fragment fragment = (Fragment) object;
+                StepDetailPageFragment fragment = (StepDetailPageFragment) object;
                 WrapContentViewPager pager = (WrapContentViewPager) container;
                 if (fragment != null && fragment.getView() != null) {
                     mCurrentPosition = position;
                     pager.measureCurrentView(fragment.getView());
+                    fragment.configFragmentState((ViewPager) container);
                 }
             }
+//
         }
 
     }

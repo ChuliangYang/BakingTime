@@ -104,7 +104,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(view -> {
                 Intent intent=new Intent(context, RecipeDetailActivity.class);
-                EventBus.getDefault().removeAllStickyEvents();
+                EventBus.getDefault().removeStickyEvent(EventHelper.RecipesBeanMessage.class);
                 EventBus.getDefault().postSticky(EventHelper.create().buildRecipesBeanMessage((RecipesBean) recipeListModel.get(getAdapterPosition())));
                 context.startActivity(intent);
             });

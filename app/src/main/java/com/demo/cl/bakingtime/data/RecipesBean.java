@@ -67,7 +67,7 @@ public class RecipesBean implements Parcelable {
         this.steps = steps;
     }
 
-    public static class IngredientsBean {
+    public static class IngredientsBean implements Parcelable {
 
         private String quantity;
         private String measure;
@@ -96,6 +96,39 @@ public class RecipesBean implements Parcelable {
         public void setIngredient(String ingredient) {
             this.ingredient = ingredient;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.quantity);
+            dest.writeString(this.measure);
+            dest.writeString(this.ingredient);
+        }
+
+        public IngredientsBean() {
+        }
+
+        protected IngredientsBean(Parcel in) {
+            this.quantity = in.readString();
+            this.measure = in.readString();
+            this.ingredient = in.readString();
+        }
+
+        public static final Creator<IngredientsBean> CREATOR = new Creator<IngredientsBean>() {
+            @Override
+            public IngredientsBean createFromParcel(Parcel source) {
+                return new IngredientsBean(source);
+            }
+
+            @Override
+            public IngredientsBean[] newArray(int size) {
+                return new IngredientsBean[size];
+            }
+        };
     }
 
     public static class StepsBean implements Parcelable {

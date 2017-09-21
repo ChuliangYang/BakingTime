@@ -1,5 +1,8 @@
 package com.demo.cl.bakingtime.helper;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.Interface.OnScroll;
 
@@ -44,7 +47,7 @@ public class EventHelper {
         RecipesBean recipesBean;
     }
 
-    public class StepsBeanMessage{
+    public class StepsBeanMessage implements Parcelable {
         private int current_position;
         private RecipesBean recipesBean;
 
@@ -68,6 +71,34 @@ public class EventHelper {
         public void setRecipesBean(RecipesBean recipesBean) {
             this.recipesBean = recipesBean;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.current_position);
+            dest.writeParcelable(this.recipesBean, flags);
+        }
+
+        protected StepsBeanMessage(Parcel in) {
+            this.current_position = in.readInt();
+            this.recipesBean = in.readParcelable(RecipesBean.class.getClassLoader());
+        }
+
+        public  final Parcelable.Creator<StepsBeanMessage> CREATOR = new Parcelable.Creator<StepsBeanMessage>() {
+            @Override
+            public StepsBeanMessage createFromParcel(Parcel source) {
+                return new StepsBeanMessage(source);
+            }
+
+            @Override
+            public StepsBeanMessage[] newArray(int size) {
+                return new StepsBeanMessage[size];
+            }
+        };
     }
 
     public class ScrollMessage{

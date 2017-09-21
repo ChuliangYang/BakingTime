@@ -32,7 +32,21 @@ public class StepsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        recipesBean = EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
+        if (savedInstanceState != null) {
+            recipesBean= (RecipesBean) savedInstanceState.get("recipesBean");
+        } else if (EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class)!=null) {
+            recipesBean = EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
+        }
+
+        if (recipesBean != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("recipesBean", recipesBean);
+            setArguments(bundle);
+        } else if (getArguments()!=null&&getArguments().get("recipesBean") != null) {
+            recipesBean = (RecipesBean) getArguments().get("recipesBean");
+        } else {
+            recipesBean=new RecipesBean();
+        }
     }
 
     @Nullable
@@ -47,4 +61,9 @@ public class StepsFragment extends Fragment {
         return contentView;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("recipesBean",recipesBean);
+        super.onSaveInstanceState(outState);
+    }
 }

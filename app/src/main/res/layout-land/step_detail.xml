@@ -3,8 +3,6 @@
     android:id="@+id/sv_step_detail"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="0dp"
-    android:layout_marginBottom="0dp"
     >
 <com.demo.cl.bakingtime.widget.WrapContentViewPager
     android:id="@+id/wcvp_step_detail"
@@ -12,5 +10,5 @@
     android:layout_height="wrap_content"
     android:paddingBottom="0dp"
     android:layout_marginBottom="0dp"
-     />
+    />
 </ScrollView>

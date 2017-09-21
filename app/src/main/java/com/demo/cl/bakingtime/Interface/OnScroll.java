@@ -5,6 +5,6 @@ package com.demo.cl.bakingtime.Interface;
  */
 
 public interface OnScroll {
-    void ScrollTo(int x,int y);
-    void ScrollBy(int x,int y);
+    void setScrollX(int x);
+    void setScrollY(int y);
 }

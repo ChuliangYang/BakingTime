@@ -3,6 +3,7 @@ package com.demo.cl.bakingtime.widget;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -10,6 +11,7 @@ import android.view.View;
  */
 
 public class WrapContentViewPager extends ViewPager {
+
     public WrapContentViewPager(Context context) {
         super(context);
     }
@@ -38,4 +40,5 @@ public class WrapContentViewPager extends ViewPager {
         mCurrentView = currentView;
         requestLayout();
     }
+
 }

@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -62,18 +64,40 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
     Toolbar tb_step_detail_land;
     SimpleExoPlayerView player_view_land;
     TextView tv_describe_land;
-    RelativeLayout rl_navigate_land;
     ImageView iv_previous_land;
     ImageView iv_next_land;
+    RelativeLayout content_step_detail;
     private RecipesBean.StepsBean stepsBean;
     private EventHelper.StepsBeanMessage stepsBeanMessage;
     private OnStepNavigation onStepNavigation;
     private OnScroll onScroll;
+    private String TAG =getClass().getName();
+    private Boolean NoVideo=false;
+    private static int toolbarSize;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         stepsBean=getArguments().getParcelable(Constant.DataKey.STEP_BEAN);
+        if (savedInstanceState != null) {
+            stepsBeanMessage= (EventHelper.StepsBeanMessage) savedInstanceState.get("stepsBeanMessage");
+        } else {
+            stepsBeanMessage= EventBus.getDefault().getStickyEvent(EventHelper.StepsBeanMessage.class);
+        }
+        if (EventBus.getDefault().getStickyEvent(EventHelper.ScrollMessage.class)!=null) {
+            onScroll=EventBus.getDefault().getStickyEvent(EventHelper.ScrollMessage.class).getOnScroll();
+        }
+
+        if (stepsBeanMessage != null) {
+            Bundle bundle=getArguments();
+            bundle.putParcelable("stepsBeanMessage", stepsBeanMessage);
+            setArguments(bundle);
+        } else if (getArguments()!=null&&getArguments().get("stepsBeanMessage") != null) {
+            stepsBeanMessage = (EventHelper.StepsBeanMessage) getArguments().get("stepsBeanMessage");
+        } else {
+            stepsBeanMessage=EventHelper.create().buildStepsBeanMessage(0,new RecipesBean());
+        }
+
     }
 
     @Nullable
@@ -87,46 +111,48 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
             tb_step_detail_land=contentView.findViewById(R.id.tb_step_detail_land);
             player_view_land=contentView.findViewById(R.id.player_view_land);
             tv_describe_land=contentView.findViewById(R.id.tv_describe_land);
-            rl_navigate_land=contentView.findViewById(R.id.rl_navigate_land);
             iv_previous_land=contentView.findViewById(R.id.iv_previous_land);
             iv_next_land=contentView.findViewById(R.id.iv_next_land);
-            stepsBeanMessage= EventBus.getDefault().getStickyEvent(EventHelper.StepsBeanMessage.class);
-            onScroll=EventBus.getDefault().getStickyEvent(EventHelper.ScrollMessage.class).getOnScroll();
+            content_step_detail=contentView.findViewById(R.id.content_step_detail);
+
             tb_step_detail_land.setTitle(stepsBeanMessage.getRecipesBean().getName());
             tb_step_detail_land.setNavigationOnClickListener(view -> {
                 getActivity().finish();
             });
 
+            if (toolbarSize==0) {
+                tb_step_detail_land.measure(0,0);
+                toolbarSize=tb_step_detail_land.getMeasuredHeight();
+            }
+
             if (TextUtils.isEmpty(stepsBean.getVideoURL())) {
                 player_view_land.setVisibility(View.GONE);
+                tb_step_detail_land.setVisibility(View.VISIBLE);
+                NoVideo=true;
+                contentView.measure(0,0);
+                if (contentView.getMeasuredHeight()<getResources().getDisplayMetrics().heightPixels) {
+                    ViewPager.LayoutParams vp_layoutParams=new ViewPager.LayoutParams();
+                    vp_layoutParams.height=getResources().getDisplayMetrics().heightPixels-DisplayHelper.getStatusBarHeight(getContext());
+                    vp_layoutParams.width=ViewPager.LayoutParams.MATCH_PARENT;
+                    content_step_detail.setLayoutParams(vp_layoutParams);
+                }
+
             } else {
                 initializePlayer(Uri.parse(stepsBean.getVideoURL()),player_view_land);
-                onScroll.ScrollTo(0,100);
-
-            }
-
-            contentView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                player_view_land.getViewTreeObserver().removeOnPreDrawListener(this);
-                LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,getResources().getDisplayMetrics().heightPixels- DisplayHelper.getStatusBarHeight(getContext()));
+                RelativeLayout.LayoutParams layoutParams= (RelativeLayout.LayoutParams) player_view_land.getLayoutParams();
+                layoutParams.height=getResources().getDisplayMetrics().heightPixels- DisplayHelper.getStatusBarHeight(getContext());
+                layoutParams.width=RelativeLayout.LayoutParams.MATCH_PARENT;
                 player_view_land.setLayoutParams(layoutParams);
-//                onScroll.ScrollTo(0,tb_step_detail_land.getHeight());
-//                contentView.scrollTo(0,tb_step_detail_land.getHeight());
-//                contentView.scrollBy(0,tb_step_detail_land.getHeight());
-                return true;
+                tb_step_detail_land.setVisibility(View.GONE);
             }
-        });
-
             tv_describe_land.setText(stepsBean.getDescription());
 
-            iv_previous_land.setOnClickListener(view -> {
-                onStepNavigation.onPrevious();
-            });
+            iv_previous_land.setOnClickListener(view -> onStepNavigation.onPrevious());
 
-            iv_next_land.setOnClickListener(view -> {
-                onStepNavigation.onNext();
-            });
+            iv_next_land.setOnClickListener(view -> onStepNavigation.onNext());
+
+
+
 
         }else if(ori == cf.ORIENTATION_PORTRAIT){
             //竖屏
@@ -142,20 +168,6 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
             }
         }
 
-
-
-
-
-
-//        mPlayerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-//            @Override
-//            public boolean onPreDraw() {
-//                mPlayerView.getViewTreeObserver().removeOnPreDrawListener(this);
-//                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,getResources().getDisplayMetrics().heightPixels- DisplayHelper.getStatusBarHeight(getContext())-DisplayHelper.dip2px(getContext(),56));
-//                mPlayerView.setLayoutParams(layoutParams);
-//                return true;
-//            }
-//        });
         return contentView;
     }
 
@@ -205,7 +217,12 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-        mPlayerView.setVisibility(View.GONE);
+        if (player_view_land!=null) {
+            player_view_land.setVisibility(View.GONE);
+        }
+        if (mPlayerView!=null) {
+            mPlayerView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -240,5 +257,19 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
 
     public void setOnStepNavigation(OnStepNavigation onStepNavigation) {
         this.onStepNavigation = onStepNavigation;
+    }
+
+    public void configFragmentState(ViewPager viewPager) {
+        viewPager.post(() -> {
+            onScroll.setScrollY(toolbarSize);
+            tb_step_detail_land.setVisibility(View.VISIBLE);
+        });
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("stepsBeanMessage",stepsBeanMessage);
+        super.onSaveInstanceState(outState);
     }
 }

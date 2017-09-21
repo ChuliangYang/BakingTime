@@ -17,6 +17,7 @@ import com.demo.cl.bakingtime.Interface.OnScroll;
 import com.demo.cl.bakingtime.Interface.OnStepNavigation;
 import com.demo.cl.bakingtime.R;
 import com.demo.cl.bakingtime.adapter.StepDetailPagerAdapter;
+import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.helper.EventHelper;
 import com.demo.cl.bakingtime.widget.WrapContentViewPager;
 
@@ -27,7 +28,7 @@ import org.greenrobot.eventbus.EventBus;
  * Created by CL on 9/18/17.
  */
 
-public class StepDetailFragment extends Fragment{
+public class StepDetailFragment extends Fragment implements OnScroll{
     Toolbar tbStepDetail;
     ViewPager vpStepDetail;
     ImageView ivPrevious;
@@ -36,57 +37,92 @@ public class StepDetailFragment extends Fragment{
     WrapContentViewPager wrapContentViewPager;
     ScrollView sv_step_detail;
     private EventHelper.StepsBeanMessage stepsBeanMessage;
+    private int currentPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stepsBeanMessage=EventBus.getDefault().getStickyEvent(EventHelper.StepsBeanMessage.class);
+        if (savedInstanceState != null) {
+            stepsBeanMessage= (EventHelper.StepsBeanMessage) savedInstanceState.get("stepsBeanMessage");
+            currentPosition= (int) savedInstanceState.get("currentPosition");
+        } else {
+            stepsBeanMessage=EventBus.getDefault().getStickyEvent(EventHelper.StepsBeanMessage.class);
+            currentPosition=stepsBeanMessage.getCurrent_position();
+        }
+        Bundle bundle = new Bundle();
+
+        if (stepsBeanMessage != null) {
+            bundle.putParcelable("stepsBeanMessage", stepsBeanMessage);
+            setArguments(bundle);
+        } else if (getArguments()!=null&&getArguments().get("stepsBeanMessage") != null) {
+            stepsBeanMessage = (EventHelper.StepsBeanMessage) getArguments().get("stepsBeanMessage");
+        } else {
+            stepsBeanMessage=EventHelper.create().buildStepsBeanMessage(0,new RecipesBean());
+        }
+
+//        if (stepsBeanMessage != null) {
+//            bundle.putParcelable("stepsBeanMessage", stepsBeanMessage);
+//            setArguments(bundle);
+//        } else if (getArguments()!=null&&getArguments().get("stepsBeanMessage") != null) {
+//            stepsBeanMessage = (EventHelper.StepsBeanMessage) getArguments().get("stepsBeanMessage");
+//        } else {
+//            stepsBeanMessage=EventHelper.create().buildStepsBeanMessage(0,new RecipesBean());
+//        }
+
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.step_detail, container, false);
-
         Configuration cf= this.getResources().getConfiguration(); //获取设置的配置信息
         int ori = cf.orientation ; //获取屏幕方向
         if(ori == cf.ORIENTATION_LANDSCAPE){
+            EventBus.getDefault().removeStickyEvent(EventHelper.ScrollMessage.class);
+            EventBus.getDefault().postSticky(EventHelper.create().buildScrollMessage(this));
+
             //横屏
             wrapContentViewPager=contentView.findViewById(R.id.wcvp_step_detail);
             sv_step_detail=contentView.findViewById(R.id.sv_step_detail);
             StepDetailPagerAdapter stepDetailPagerAdapter=new StepDetailPagerAdapter(getChildFragmentManager(),getContext());
             stepDetailPagerAdapter.setRecipesBean(stepsBeanMessage.getRecipesBean());
             wrapContentViewPager.setAdapter(stepDetailPagerAdapter);
-            wrapContentViewPager.setCurrentItem(stepsBeanMessage.getCurrent_position(),false);
+            wrapContentViewPager.setCurrentItem(currentPosition,false);
             stepDetailPagerAdapter.setOnStepNavigation(new OnStepNavigation() {
                 @Override
                 public void onPrevious() {
-                    if (vpStepDetail.getCurrentItem()-1>=0) {
-                        vpStepDetail.setCurrentItem(vpStepDetail.getCurrentItem()-1);
+                    if (wrapContentViewPager.getCurrentItem()-1>=0) {
+                        wrapContentViewPager.setCurrentItem(wrapContentViewPager.getCurrentItem()-1);
+                        currentPosition=wrapContentViewPager.getCurrentItem()-1;
                     }
                 }
 
                 @Override
                 public void onNext() {
-                    if (vpStepDetail.getCurrentItem()+1<=stepDetailPagerAdapter.getCount()-1) {
-                        vpStepDetail.setCurrentItem(vpStepDetail.getCurrentItem()+1);
+                    if (wrapContentViewPager.getCurrentItem()+1<=stepDetailPagerAdapter.getCount()-1) {
+                        wrapContentViewPager.setCurrentItem(wrapContentViewPager.getCurrentItem()+1);
+                        currentPosition=wrapContentViewPager.getCurrentItem()+1;
                     }
                 }
             });
-            OnScroll onScroll=new OnScroll() {
+
+            wrapContentViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
-                public void ScrollTo(int x, int y) {
-//                    sv_step_detail.scrollTo(x,y);
-                    sv_step_detail.setScrollY(y);
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
                 }
 
                 @Override
-                public void ScrollBy(int x, int y) {
-                    sv_step_detail.scrollBy(x,y);
+                public void onPageSelected(int position) {
+                    currentPosition=position;
                 }
-            };
-            EventBus.getDefault().removeStickyEvent(EventHelper.ScrollMessage.class);
-            EventBus.getDefault().postSticky(EventHelper.create().buildScrollMessage(onScroll));
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
 
         }else if(ori == cf.ORIENTATION_PORTRAIT){
             //竖屏
@@ -99,7 +135,7 @@ public class StepDetailFragment extends Fragment{
             StepDetailPagerAdapter stepDetailPagerAdapter=new StepDetailPagerAdapter(getChildFragmentManager(),getContext());
             stepDetailPagerAdapter.setRecipesBean(stepsBeanMessage.getRecipesBean());
             vpStepDetail.setAdapter(stepDetailPagerAdapter);
-            vpStepDetail.setCurrentItem(stepsBeanMessage.getCurrent_position(),false);
+            vpStepDetail.setCurrentItem(currentPosition,false);
             tbStepDetail.setTitle(stepsBeanMessage.getRecipesBean().getName());
             tbStepDetail.setNavigationOnClickListener(view -> getActivity().finish());
 
@@ -114,13 +150,48 @@ public class StepDetailFragment extends Fragment{
                     vpStepDetail.setCurrentItem(vpStepDetail.getCurrentItem()+1);
                 }
             });
+
+            vpStepDetail.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    currentPosition=position;
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
         }
 
-
-
-
-
-
         return contentView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("stepsBeanMessage",stepsBeanMessage);
+        outState.putInt("currentPosition",currentPosition);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void setScrollX(int x) {
+        if (sv_step_detail!=null) {
+            sv_step_detail.setScrollX(x);
+        }
+    }
+
+    @Override
+    public void setScrollY(int y) {
+        if (sv_step_detail!=null) {
+            sv_step_detail.post(() -> {
+                sv_step_detail.setScrollY(y);
+            });
+        }
     }
 }
