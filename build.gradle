@@ -7,10 +7,6 @@ buildscript {
             'minSdkVersion' : 19,
             'buildTools'    : '26.0.1',
             'supportLibrary': '26.0.2'
-//            'butterknife'   : '8.8.1',
-//            'glide'         : '4.1.1',
-//            'kotlin'        : '1.1.4-3',
-//            'retrofit'      : '2.3.0',
     ]
     repositories {
         google()

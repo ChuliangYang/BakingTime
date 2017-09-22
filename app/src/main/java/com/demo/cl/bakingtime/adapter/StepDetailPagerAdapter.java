@@ -34,6 +34,8 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
 
     private int mCurrentPosition = -1;
 
+    private int FlagPosition = -1;
+
     public StepDetailPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context=context;
@@ -44,19 +46,33 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
-        Configuration cf= context.getResources().getConfiguration(); //获取设置的配置信息
-        int ori = cf.orientation ; //获取屏幕方向
-        if(ori == cf.ORIENTATION_LANDSCAPE){
-            if (position != mCurrentPosition) {
-                StepDetailPageFragment fragment = (StepDetailPageFragment) object;
-                WrapContentViewPager pager = (WrapContentViewPager) container;
-                if (fragment != null && fragment.getView() != null) {
-                    mCurrentPosition = position;
-                    pager.measureCurrentView(fragment.getView());
-                    fragment.configFragmentState((ViewPager) container);
+        if (FlagPosition != position) {
+                Configuration cf= context.getResources().getConfiguration(); //获取设置的配置信息
+                int ori = cf.orientation ; //获取屏幕方向
+                if (ori == cf.ORIENTATION_LANDSCAPE) {
+                    if (position != mCurrentPosition) {
+                        StepDetailPageFragment fragment = new StepDetailPageFragment();
+                        WrapContentViewPager pager = new WrapContentViewPager(context);
+                        if (object instanceof StepDetailPageFragment) {
+                            fragment = (StepDetailPageFragment) object;
+                        }
+
+                        if (container instanceof WrapContentViewPager) {
+                            pager = (WrapContentViewPager) container;
+                        }
+                        if (fragment != null && fragment.getView() != null) {
+                            mCurrentPosition = position;
+                            pager.measureCurrentView(fragment.getView());
+                            fragment.configLandFragmentState((ViewPager) container);
+                        }
+                    }
+                } else {
+                    if (object instanceof StepDetailPageFragment) {
+                        StepDetailPageFragment  fragment = (StepDetailPageFragment) object;
+                        fragment.configPortFragmentState(position);
+                    }
                 }
-            }
-//
+            FlagPosition=position;
         }
 
     }

@@ -19,9 +19,12 @@ import com.demo.cl.bakingtime.R;
 import com.demo.cl.bakingtime.adapter.StepDetailPagerAdapter;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.helper.EventHelper;
+import com.demo.cl.bakingtime.helper.PlayerHelper;
 import com.demo.cl.bakingtime.widget.WrapContentViewPager;
 
 import org.greenrobot.eventbus.EventBus;
+
+import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 
 
 /**
@@ -38,6 +41,9 @@ public class StepDetailFragment extends Fragment implements OnScroll{
     ScrollView sv_step_detail;
     private EventHelper.StepsBeanMessage stepsBeanMessage;
     private int currentPosition;
+    boolean FlagOnce=true;
+    private int scroll_state=-10;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +65,8 @@ public class StepDetailFragment extends Fragment implements OnScroll{
         } else {
             stepsBeanMessage=EventHelper.create().buildStepsBeanMessage(0,new RecipesBean());
         }
+
+        PlayerHelper.getInstance().initPlayer(getContext());
 
 //        if (stepsBeanMessage != null) {
 //            bundle.putParcelable("stepsBeanMessage", stepsBeanMessage);
@@ -110,7 +118,7 @@ public class StepDetailFragment extends Fragment implements OnScroll{
             wrapContentViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                    PlayerHelper.getInstance().stopPlayer();
                 }
 
                 @Override
@@ -138,6 +146,7 @@ public class StepDetailFragment extends Fragment implements OnScroll{
             vpStepDetail.setCurrentItem(currentPosition,false);
             tbStepDetail.setTitle(stepsBeanMessage.getRecipesBean().getName());
             tbStepDetail.setNavigationOnClickListener(view -> getActivity().finish());
+            vpStepDetail.setOffscreenPageLimit(1);
 
             ivPrevious.setOnClickListener(view -> {
                 if (vpStepDetail.getCurrentItem()-1>=0) {
@@ -151,10 +160,13 @@ public class StepDetailFragment extends Fragment implements OnScroll{
                 }
             });
 
+
             vpStepDetail.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+//                    if (currentPosition==position) {
+//                        PlayerHelper.getInstance().stopPlayer();
+//                    }
                 }
 
                 @Override
@@ -164,6 +176,15 @@ public class StepDetailFragment extends Fragment implements OnScroll{
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
+                    if (state == SCROLL_STATE_DRAGGING ) {
+                        if (FlagOnce) {
+                            PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                            PlayerHelper.getInstance().stopPlayer();
+                            FlagOnce=false;
+                        }
+                    } else {
+                        FlagOnce=true;
+                    }
 
                 }
             });
@@ -177,6 +198,19 @@ public class StepDetailFragment extends Fragment implements OnScroll{
         outState.putParcelable("stepsBeanMessage",stepsBeanMessage);
         outState.putInt("currentPosition",currentPosition);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+//        PlayerHelper.getInstance().stopPlayer();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        PlayerHelper.getInstance().releasePlayer();
+
     }
 
     @Override

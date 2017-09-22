@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".MyApplication"
+        android:largeHeap="true"
         >
         <activity android:name=".ui.RecipesActivity" android:launchMode="singleTask">
             <intent-filter>
@@ -20,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.RecipeDetailActivity" android:launchMode="singleTop"/>
-        <activity android:name=".ui.StepDetailActivity" android:launchMode="singleTop"/>
+        <activity android:name=".ui.StepDetailActivity" android:launchMode="singleTop"
+            />
     </application>
 
 </manifest>

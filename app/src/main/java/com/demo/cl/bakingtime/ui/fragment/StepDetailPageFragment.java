@@ -28,12 +28,14 @@ import com.demo.cl.bakingtime.data.Constant;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.helper.DisplayHelper;
 import com.demo.cl.bakingtime.helper.EventHelper;
+import com.demo.cl.bakingtime.helper.PlayerHelper;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -51,6 +53,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.google.android.exoplayer2.Player.REPEAT_MODE_ALL;
 
 /**
  * Created by CL on 9/18/17.
@@ -74,6 +78,15 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
     private String TAG =getClass().getName();
     private Boolean NoVideo=false;
     private static int toolbarSize;
+    private ExtractorMediaSource mediaSource;
+    private Boolean createdView=false;
+    private Boolean isVisible=false;
+    private Boolean LoadVideo=false;
+    private int position;
+
+
+
+    private long current_time;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,6 +117,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.step_detail_page, container, false);
+        createdView=true;
         Configuration cf= this.getResources().getConfiguration(); //获取设置的配置信息
         int ori = cf.orientation ; //获取屏幕方向
         if(ori == cf.ORIENTATION_LANDSCAPE){
@@ -138,7 +152,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
                 }
 
             } else {
-                initializePlayer(Uri.parse(stepsBean.getVideoURL()),player_view_land);
+                    initializePlayer(Uri.parse(stepsBean.getVideoURL()),player_view_land);
                 RelativeLayout.LayoutParams layoutParams= (RelativeLayout.LayoutParams) player_view_land.getLayoutParams();
                 layoutParams.height=getResources().getDisplayMetrics().heightPixels- DisplayHelper.getStatusBarHeight(getContext());
                 layoutParams.width=RelativeLayout.LayoutParams.MATCH_PARENT;
@@ -163,7 +177,10 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
             if (TextUtils.isEmpty(stepsBean.getVideoURL())) {
                 mPlayerView.setVisibility(View.GONE);
             } else {
-                initializePlayer(Uri.parse(stepsBean.getVideoURL()),mPlayerView);
+                if (isVisible) {
+                    initializePlayer(Uri.parse(stepsBean.getVideoURL()), mPlayerView);
+                }
+
 
             }
         }
@@ -175,19 +192,30 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
 
     private void initializePlayer(Uri mediaUri,SimpleExoPlayerView simpleExoPlayerView) {
             // Create an instance of the ExoPlayer.
-            TrackSelector trackSelector = new DefaultTrackSelector();
-            LoadControl loadControl = new DefaultLoadControl();
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+//            TrackSelector trackSelector = new DefaultTrackSelector();
+//            LoadControl loadControl = new DefaultLoadControl();
+//            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+            if (PlayerHelper.getInstance().getPlayer(getContext()) instanceof SimpleExoPlayer) {
+                mExoPlayer = (SimpleExoPlayer) PlayerHelper.getInstance().getPlayer(getContext());
+             }
+        if (mExoPlayer.isLoading()) {
+            mExoPlayer.stop();
+        }
             simpleExoPlayerView.setPlayer(mExoPlayer);
-
             // Set the ExoPlayer.EventListener to this activity.
             mExoPlayer.addListener(this);
             // Prepare the MediaSource.使用uri定位媒体资源
             String userAgent = Util.getUserAgent(getContext(), getResources().getString(R.string.app_name));
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    getContext(), userAgent), new DefaultExtractorsFactory(), null, null);//这个适用常规格式，自适应流不      合适
+             mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);//这个适用常规格式，自适应流不      合适
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(false);//设置就绪即自动播放
+        if (PlayerHelper.getInstance().getProgress(position) != null) {
+            mExoPlayer.seekTo(PlayerHelper.getInstance().getProgress(position));
+        }
+            mExoPlayer.setRepeatMode(REPEAT_MODE_ALL);
+            mExoPlayer.setPlayWhenReady(true);
+//        }
+        //设置就绪即自动播放
     }
 
     @Override
@@ -202,12 +230,13 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
 
     @Override
     public void onLoadingChanged(boolean isLoading) {
-
+        if (!isLoading) {
+            current_time=mExoPlayer.getContentPosition();
+        }
     }
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
     }
 
     @Override
@@ -238,17 +267,25 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
     @Override
     public void onPause() {
         super.onPause();
-        if (mExoPlayer != null) {
-            mExoPlayer.stop();
-        }
+
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isVisible=false;
+        createdView=false;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mExoPlayer!=null) {
-            mExoPlayer.release();
-        }
     }
 
     public OnStepNavigation getOnStepNavigation() {
@@ -259,17 +296,41 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
         this.onStepNavigation = onStepNavigation;
     }
 
-    public void configFragmentState(ViewPager viewPager) {
+    public void configLandFragmentState(ViewPager viewPager) {
         viewPager.post(() -> {
             onScroll.setScrollY(toolbarSize);
             tb_step_detail_land.setVisibility(View.VISIBLE);
         });
-
+        if (mExoPlayer!=null) {
+            mExoPlayer.prepare(mediaSource);
+            mExoPlayer.setPlayWhenReady(false);//设置就绪即自动播放
+        }
     }
+    public void configPortFragmentState(int position) {
+        if (!createdView) {
+            isVisible=true;
+            return;
+        }
+        this.position=position;
+
+        if (createdView&&mPlayerView.getVisibility()==View.VISIBLE) {
+                initializePlayer(Uri.parse(stepsBean.getVideoURL()), mPlayerView);
+        }
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable("stepsBeanMessage",stepsBeanMessage);
         super.onSaveInstanceState(outState);
     }
+    public void setCurrent_time(long current_time) {
+        this.current_time = current_time;
+    }
+
+
+
 }
+
+
+
