@@ -84,10 +84,15 @@ public class StepsAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this,view);
             view.setOnClickListener(itemView -> {
-                Intent intent=new Intent(context, StepDetailActivity.class);
-                EventBus.getDefault().removeStickyEvent(EventHelper.StepsBeanMessage.class);
-                EventBus.getDefault().postSticky(EventHelper.create().buildStepsBeanMessage(getAdapterPosition(),recipesBean));
-                context.startActivity(intent);
+                if (!context.getResources().getBoolean(R.bool.isTablet)) {
+                    EventBus.getDefault().removeStickyEvent(EventHelper.StepsBeanMessage.class);
+                    EventBus.getDefault().postSticky(EventHelper.create().buildStepsBeanMessage(getAdapterPosition(),recipesBean));
+                    Intent intent=new Intent(context, StepDetailActivity.class);
+                    context.startActivity(intent);
+                } else {
+                    EventBus.getDefault().removeStickyEvent(EventHelper.StepsBeanMessage.class);
+                    EventBus.getDefault().postSticky(EventHelper.create().buildStepsBeanMessage(getAdapterPosition(),recipesBean).setRefreshFragment(true));
+                }
             });
         }
     }

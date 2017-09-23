@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/gl_pc"
+        app:layout_constraintStart_toStartOf="@+id/gl_pc"
+        android:background="#1F000000"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <FrameLayout
+        android:id="@+id/fl_detail"
+        android:layout_width="0dp"
+        android:layout_height="887dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/gl_pc"
+        app:layout_constraintTop_toTopOf="@+id/fl_list">
+
+    </FrameLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_pc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_recipe"
+        style="?actionBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:titleTextColor="@android:color/white" />
+
+    <FrameLayout
+        android:id="@+id/fl_list"
+        android:layout_width="0dp"
+        android:layout_height="887dp"
+        app:layout_constraintEnd_toStartOf="@+id/gl_pc"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_recipe">
+
+    </FrameLayout>
+
+
+</android.support.constraint.ConstraintLayout>

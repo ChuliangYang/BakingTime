@@ -2,6 +2,7 @@ package com.demo.cl.bakingtime.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
@@ -25,8 +26,15 @@ public class StepDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_whole_fragment);
         ButterKnife.bind(this);
-        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fl_content, new StepDetailFragment());
-        fragmentTransaction.commit();
+        if (savedInstanceState != null&&getSupportFragmentManager().findFragmentByTag("StepDetailFragment")!=null) {
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fl_content, getSupportFragmentManager().findFragmentByTag("StepDetailFragment"));
+            fragmentTransaction.commit();
+        } else {
+            FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fl_content, new StepDetailFragment(),"StepDetailFragment");
+            fragmentTransaction.commit();
+        }
+
     }
 }

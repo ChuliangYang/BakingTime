@@ -25,6 +25,8 @@ import com.demo.cl.bakingtime.widget.WrapContentViewPager;
 import org.greenrobot.eventbus.EventBus;
 
 import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
+import static android.view.View.FOCUS_LEFT;
+import static android.view.View.FOCUS_RIGHT;
 
 
 /**
@@ -42,7 +44,7 @@ public class StepDetailFragment extends Fragment implements OnScroll{
     private EventHelper.StepsBeanMessage stepsBeanMessage;
     private int currentPosition;
     boolean FlagOnce=true;
-    private int scroll_state=-10;
+    private int scroll_state;
 
 
     @Override
@@ -100,73 +102,27 @@ public class StepDetailFragment extends Fragment implements OnScroll{
             stepDetailPagerAdapter.setOnStepNavigation(new OnStepNavigation() {
                 @Override
                 public void onPrevious() {
-                    if (wrapContentViewPager.getCurrentItem()-1>=0) {
-                        wrapContentViewPager.setCurrentItem(wrapContentViewPager.getCurrentItem()-1);
-                        currentPosition=wrapContentViewPager.getCurrentItem()-1;
+                    if (wrapContentViewPager.getCurrentItem()>0) {
+                        PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                        PlayerHelper.getInstance().stopPlayer();
+                        wrapContentViewPager.arrowScroll(FOCUS_LEFT);
                     }
                 }
 
                 @Override
                 public void onNext() {
-                    if (wrapContentViewPager.getCurrentItem()+1<=stepDetailPagerAdapter.getCount()-1) {
-                        wrapContentViewPager.setCurrentItem(wrapContentViewPager.getCurrentItem()+1);
-                        currentPosition=wrapContentViewPager.getCurrentItem()+1;
+                    if (wrapContentViewPager.getCurrentItem()<wrapContentViewPager.getAdapter().getCount()-1) {
+                        PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                        PlayerHelper.getInstance().stopPlayer();
+                        wrapContentViewPager.arrowScroll(FOCUS_RIGHT);
                     }
+
                 }
             });
 
             wrapContentViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    PlayerHelper.getInstance().stopPlayer();
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    currentPosition=position;
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
-
-        }else if(ori == cf.ORIENTATION_PORTRAIT){
-            //竖屏
-            tbStepDetail=contentView.findViewById(R.id.tb_step_detail);
-            vpStepDetail=contentView.findViewById(R.id.vp_step_detail);
-            ivPrevious =contentView.findViewById(R.id.iv_previous);
-            ivNext=contentView.findViewById(R.id.iv_next);
-            rlNavigate=contentView.findViewById(R.id.rl_navigate);
-
-            StepDetailPagerAdapter stepDetailPagerAdapter=new StepDetailPagerAdapter(getChildFragmentManager(),getContext());
-            stepDetailPagerAdapter.setRecipesBean(stepsBeanMessage.getRecipesBean());
-            vpStepDetail.setAdapter(stepDetailPagerAdapter);
-            vpStepDetail.setCurrentItem(currentPosition,false);
-            tbStepDetail.setTitle(stepsBeanMessage.getRecipesBean().getName());
-            tbStepDetail.setNavigationOnClickListener(view -> getActivity().finish());
-            vpStepDetail.setOffscreenPageLimit(1);
-
-            ivPrevious.setOnClickListener(view -> {
-                if (vpStepDetail.getCurrentItem()-1>=0) {
-                    vpStepDetail.setCurrentItem(vpStepDetail.getCurrentItem()-1);
-                }
-            });
-
-            ivNext.setOnClickListener(view -> {
-                if (vpStepDetail.getCurrentItem()+1<=stepDetailPagerAdapter.getCount()-1) {
-                    vpStepDetail.setCurrentItem(vpStepDetail.getCurrentItem()+1);
-                }
-            });
-
-
-            vpStepDetail.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                    if (currentPosition==position) {
-//                        PlayerHelper.getInstance().stopPlayer();
-//                    }
                 }
 
                 @Override
@@ -185,7 +141,68 @@ public class StepDetailFragment extends Fragment implements OnScroll{
                     } else {
                         FlagOnce=true;
                     }
+                }
+            });
 
+        }else if(ori == cf.ORIENTATION_PORTRAIT){
+            //竖屏
+            tbStepDetail=contentView.findViewById(R.id.tb_recipe);
+            vpStepDetail=contentView.findViewById(R.id.vp_step_detail);
+            ivPrevious =contentView.findViewById(R.id.iv_previous);
+            ivNext=contentView.findViewById(R.id.iv_next);
+            rlNavigate=contentView.findViewById(R.id.rl_navigate);
+
+            StepDetailPagerAdapter stepDetailPagerAdapter=new StepDetailPagerAdapter(getChildFragmentManager(),getContext());
+            stepDetailPagerAdapter.setRecipesBean(stepsBeanMessage.getRecipesBean());
+            vpStepDetail.setAdapter(stepDetailPagerAdapter);
+            vpStepDetail.setCurrentItem(currentPosition,false);
+            tbStepDetail.setTitle(stepsBeanMessage.getRecipesBean().getName());
+            tbStepDetail.setNavigationOnClickListener(view -> getActivity().finish());
+            vpStepDetail.setOffscreenPageLimit(1);
+
+            ivPrevious.setOnClickListener(view -> {
+                if (vpStepDetail.getCurrentItem()>0) {
+                    PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                    PlayerHelper.getInstance().stopPlayer();
+                    vpStepDetail.arrowScroll(FOCUS_LEFT);
+                }
+
+
+            });
+
+            ivNext.setOnClickListener(view -> {
+
+                if (vpStepDetail.getCurrentItem()<vpStepDetail.getAdapter().getCount()-1) {
+                    PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                    PlayerHelper.getInstance().stopPlayer();
+                    vpStepDetail.arrowScroll(FOCUS_RIGHT);
+                }
+            });
+
+
+            vpStepDetail.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    currentPosition=position;
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    if (state == SCROLL_STATE_DRAGGING) {
+                        if (FlagOnce) {
+                            PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                            PlayerHelper.getInstance().stopPlayer();
+                            FlagOnce=false;
+                        }
+                    } else {
+                        FlagOnce=true;
+                    }
                 }
             });
         }
@@ -197,13 +214,21 @@ public class StepDetailFragment extends Fragment implements OnScroll{
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable("stepsBeanMessage",stepsBeanMessage);
         outState.putInt("currentPosition",currentPosition);
+        PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+        PlayerHelper.getInstance().setKeepStateFlag(true);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        PlayerHelper.getInstance().setKeepStateFlag(false);
+        super.onViewStateRestored(savedInstanceState);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-//        PlayerHelper.getInstance().stopPlayer();
+        PlayerHelper.getInstance().stopPlayer();
     }
 
     @Override

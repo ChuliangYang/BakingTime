@@ -23,6 +23,10 @@ public class PlayerHelper {
     private HashMap<Integer,Long> currentProgress=new HashMap();
 
 
+
+    private boolean KeepStateFlag=false;
+
+
     public static PlayerHelper getInstance() {
         return ourInstance;
     }
@@ -40,18 +44,27 @@ public class PlayerHelper {
         return simpleExoPlayer;
     }
     public Object initPlayer(Context context){
+        if (simpleExoPlayer == null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
-            return  simpleExoPlayer;
+        } else {
+            simpleExoPlayer.stop();
+        }
+        return simpleExoPlayer;
+
     }
 
     public void releasePlayer(){
-        if (simpleExoPlayer != null) {
-            simpleExoPlayer.release();
-            simpleExoPlayer = null;
+        if (!KeepStateFlag) {
+            if (simpleExoPlayer != null) {
+                // TODO: 9/22/17 平板模式下需要优化
+//                simpleExoPlayer.release();
+//                simpleExoPlayer = null;
+                simpleExoPlayer.stop();
+            }
+            currentProgress.clear();
         }
-        currentProgress=new HashMap();
     }
 
     public void stopPlayer(){
@@ -74,5 +87,9 @@ public class PlayerHelper {
         } else {
             return 0;
         }
+    }
+
+    public void setKeepStateFlag(boolean keepStateFlag) {
+        KeepStateFlag = keepStateFlag;
     }
 }

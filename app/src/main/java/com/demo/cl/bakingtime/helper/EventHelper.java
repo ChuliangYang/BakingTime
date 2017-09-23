@@ -31,6 +31,12 @@ public class EventHelper {
     }
 
 
+
+
+
+
+
+
     public  class RecipesBeanMessage{
         public RecipesBeanMessage(RecipesBean recipesBean) {
             this.recipesBean = recipesBean;
@@ -50,6 +56,7 @@ public class EventHelper {
     public class StepsBeanMessage implements Parcelable {
         private int current_position;
         private RecipesBean recipesBean;
+        private boolean refreshFragment=false;
 
         public StepsBeanMessage(int current_position, RecipesBean recipesBean) {
             this.current_position = current_position;
@@ -99,6 +106,15 @@ public class EventHelper {
                 return new StepsBeanMessage[size];
             }
         };
+
+        public boolean refreshFragment() {
+            return refreshFragment;
+        }
+
+        public StepsBeanMessage setRefreshFragment(boolean refreshFragment) {
+            this.refreshFragment = refreshFragment;
+            return this;
+        }
     }
 
     public class ScrollMessage{
@@ -117,4 +133,5 @@ public class EventHelper {
         private OnScroll OnScroll;
         private int blank;
     }
+
 }

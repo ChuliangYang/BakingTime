@@ -28,18 +28,25 @@
         android:layout_below="@+id/player_view_land"
         android:layout_marginBottom="100dp" />
 
+    <RelativeLayout
+        android:id="@+id/rl_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="0dp"
+        android:layout_marginBottom="0dp"
+        >
+
     <ImageView
         android:id="@+id/iv_previous_land"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         app:srcCompat="@drawable/ic_previous" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_toEndOf="@id/iv_previous_land"
         android:text="@string/previous" />
 
@@ -47,14 +54,14 @@
         android:id="@+id/iv_next_land"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         app:srcCompat="@drawable/ic_next" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_toStartOf="@id/iv_next_land"
         android:text="@string/next" />
+
+    </RelativeLayout>
 </RelativeLayout>

@@ -61,8 +61,12 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.recipe_detail, container, false);
         ButterKnife.bind(this, contentView);
-        tbRecipeDetail.setTitle(recipesBean.getName());
-        tbRecipeDetail.setNavigationOnClickListener(view -> getActivity().finish());
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            tbRecipeDetail.setTitle(recipesBean.getName());
+            tbRecipeDetail.setNavigationOnClickListener(view -> getActivity().finish());
+        } else {
+            tbRecipeDetail.setVisibility(View.GONE);
+        }
         recipeDetailPagerAdapter =new RecipeDetailPagerAdapter(getChildFragmentManager());
         vpRecipe.setAdapter(recipeDetailPagerAdapter);
         tlRecipe.setupWithViewPager(vpRecipe);
