@@ -24,6 +24,8 @@ import com.demo.cl.bakingtime.widget.WrapContentViewPager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import timber.log.Timber;
+
 import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 import static android.view.View.FOCUS_LEFT;
 import static android.view.View.FOCUS_RIGHT;
@@ -152,6 +154,13 @@ public class StepDetailFragment extends Fragment implements OnScroll{
             ivNext=contentView.findViewById(R.id.iv_next);
             rlNavigate=contentView.findViewById(R.id.rl_navigate);
 
+            if (getResources().getBoolean(R.bool.isTablet)) {
+                tbStepDetail.setVisibility(View.GONE);
+                rlNavigate.setVisibility(View.GONE);
+            } else {
+
+            }
+
             StepDetailPagerAdapter stepDetailPagerAdapter=new StepDetailPagerAdapter(getChildFragmentManager(),getContext());
             stepDetailPagerAdapter.setRecipesBean(stepsBeanMessage.getRecipesBean());
             vpStepDetail.setAdapter(stepDetailPagerAdapter);
@@ -233,8 +242,14 @@ public class StepDetailFragment extends Fragment implements OnScroll{
 
     @Override
     public void onDestroy() {
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            PlayerHelper.getInstance().stopPlayer();
+            Timber.w("isTablet and stop player");
+        } else {
+            PlayerHelper.getInstance().releasePlayer();
+            Timber.w("not Tablet and release player");
+        }
         super.onDestroy();
-        PlayerHelper.getInstance().releasePlayer();
 
     }
 

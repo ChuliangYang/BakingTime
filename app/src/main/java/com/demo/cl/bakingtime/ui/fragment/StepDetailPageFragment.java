@@ -212,6 +212,15 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
             mPlayerView=contentView.findViewById(R.id.player_view);
             tvDescribe=contentView.findViewById(R.id.tv_describe);
             svStepDescribe=contentView.findViewById(R.id.sv_step_describe);
+
+            if (getResources().getBoolean(R.bool.isTablet)) {
+                mPlayerView.post(() -> {
+                    RelativeLayout.LayoutParams layoutParams= (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
+                    layoutParams.height=mPlayerView.getWidth()/3*2;
+                    layoutParams.width=RelativeLayout.LayoutParams.MATCH_PARENT;
+                    mPlayerView.setLayoutParams(layoutParams);
+                });
+            }
             tvDescribe.setText(stepsBean.getDescription());
             if (TextUtils.isEmpty(stepsBean.getVideoURL())) {
                 mPlayerView.setVisibility(View.GONE);

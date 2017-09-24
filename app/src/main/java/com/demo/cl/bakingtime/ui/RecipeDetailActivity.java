@@ -12,12 +12,15 @@ import android.widget.FrameLayout;
 import com.demo.cl.bakingtime.R;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.helper.EventHelper;
+import com.demo.cl.bakingtime.helper.PlayerHelper;
 import com.demo.cl.bakingtime.ui.fragment.RecipeDetailFragment;
 import com.demo.cl.bakingtime.ui.fragment.StepDetailFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import timber.log.Timber;
 
 /**
  * Created by CL on 9/16/17.
@@ -51,26 +54,35 @@ public class RecipeDetailActivity extends AppCompatActivity {
             fl_detail=findViewById(R.id.fl_detail);
             tb_recipe.setTitle(recipesBean.getName());
             tb_recipe.setNavigationOnClickListener(view -> finish());
-
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fl_list,new RecipeDetailFragment());
-//            fragmentTransaction.replace(R.id.fl_detail,new StepDetailFragment());
-            fragmentTransaction.commit();
 
+            if (savedInstanceState != null) {
+//                Timber.w("add");
+//                fragmentTransaction.add(R.id.fl_list,getSupportFragmentManager().findFragmentByTag("RecipeDetailFragment"));
+            } else {
+                fragmentTransaction.replace(R.id.fl_list,new RecipeDetailFragment(),"RecipeDetailFragment");
+            }
+            fragmentTransaction.commit();
 
         } else {
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            RecipeDetailFragment recipeDetailFragment=new RecipeDetailFragment();
-            fragmentTransaction.replace(R.id.fl_content,recipeDetailFragment);
+
+            if (savedInstanceState != null) {
+//                fragmentTransaction.replace(R.id.fl_list,getSupportFragmentManager().findFragmentByTag("RecipeDetailFragment"));
+            } else {
+                fragmentTransaction.replace(R.id.fl_content,new RecipeDetailFragment(),"RecipeDetailFragment");
+            }
             fragmentTransaction.commit();
+
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+    protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable("recipesBean",recipesBean);
-        super.onSaveInstanceState(outState, outPersistentState);
+        super.onSaveInstanceState(outState);
     }
+
 
     @Override
     public void onStart() {
@@ -88,11 +100,19 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            PlayerHelper.getInstance().releasePlayer();
+        }
+        super.onDestroy();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventHelper.StepsBeanMessage event) {
         if (event.refreshFragment()) {
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fl_detail,new StepDetailFragment());
+            fragmentTransaction.replace(R.id.fl_detail,new StepDetailFragment(),"StepDetailFragment");
             fragmentTransaction.commit();
         }
     };

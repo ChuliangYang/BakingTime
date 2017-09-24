@@ -11,6 +11,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 
 import java.util.HashMap;
 
+import javax.security.auth.PrivateCredentialPermission;
+
 /**
  * Created by CL on 9/21/17.
  */
@@ -26,6 +28,7 @@ public class PlayerHelper {
 
     private boolean KeepStateFlag=false;
 
+    private Context context;
 
     public static PlayerHelper getInstance() {
         return ourInstance;
@@ -48,6 +51,7 @@ public class PlayerHelper {
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
+            this.context=context;
         } else {
             simpleExoPlayer.stop();
         }
@@ -58,10 +62,8 @@ public class PlayerHelper {
     public void releasePlayer(){
         if (!KeepStateFlag) {
             if (simpleExoPlayer != null) {
-                // TODO: 9/22/17 平板模式下需要优化
-//                simpleExoPlayer.release();
-//                simpleExoPlayer = null;
-                simpleExoPlayer.stop();
+                simpleExoPlayer.release();
+                simpleExoPlayer = null;
             }
             currentProgress.clear();
         }

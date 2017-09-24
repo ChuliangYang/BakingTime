@@ -72,6 +72,16 @@ public class RecipesBean implements Parcelable {
         private String quantity;
         private String measure;
         private String ingredient;
+        private Boolean checked=false;
+
+
+        public Boolean getChecked() {
+            return checked;
+        }
+
+        public void setChecked(Boolean checked) {
+            this.checked = checked;
+        }
 
         public String getQuantity() {
             return quantity;

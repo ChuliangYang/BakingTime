@@ -4,4 +4,6 @@
     <string name="check_path_name">check_path</string>
     <string name="previous">previous</string>
     <string name="next">next</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

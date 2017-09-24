@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.demo.cl.bakingtime.ui.fragment.IngredientFragment;
 import com.demo.cl.bakingtime.ui.fragment.StepsFragment;
 
+import timber.log.Timber;
+
 /**
  * Created by CL on 9/16/17.
  */
@@ -21,6 +23,7 @@ public class RecipeDetailPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
+                Timber.w("new IngredientFragment()");
                 return new IngredientFragment();
             case 1:
                 return new StepsFragment();

@@ -16,8 +16,11 @@ import com.demo.cl.bakingtime.helper.EventHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.sql.Time;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by CL on 9/16/17.
@@ -32,6 +35,7 @@ public class IngredientFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.w("fragment created");
         if (savedInstanceState != null) {
             recipesBean= (RecipesBean) savedInstanceState.get("recipesBean");
         } else if (EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class)!=null) {
