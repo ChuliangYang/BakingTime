@@ -3,6 +3,7 @@ package com.demo.cl.bakingtime.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,13 +68,12 @@ public class RecipesBean implements Parcelable {
         this.steps = steps;
     }
 
-    public static class IngredientsBean implements Parcelable {
+    public static class IngredientsBean implements Parcelable,Serializable {
 
         private String quantity;
         private String measure;
         private String ingredient;
         private Boolean checked=false;
-
 
         public Boolean getChecked() {
             return checked;

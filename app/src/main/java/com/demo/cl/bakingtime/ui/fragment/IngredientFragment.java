@@ -1,5 +1,6 @@
 package com.demo.cl.bakingtime.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,11 @@ import android.view.ViewGroup;
 
 import com.demo.cl.bakingtime.R;
 import com.demo.cl.bakingtime.adapter.IngredientAdapter;
+import com.demo.cl.bakingtime.data.Constant;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.helper.EventHelper;
+import com.demo.cl.bakingtime.helper.SharedPreferencesHelper;
+import com.demo.cl.bakingtime.service.WidgetService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,6 +24,11 @@ import java.sql.Time;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -51,6 +60,24 @@ public class IngredientFragment extends Fragment {
         } else {
             recipesBean=new RecipesBean();
         }
+
+
+        Timber.w("saveingredientList start");
+        Single.create((SingleOnSubscribe<Boolean>) e -> {
+            if (recipesBean!=null) {
+                try {
+                    SharedPreferencesHelper.saveObject(getContext().getApplicationContext(), Constant.DataKey.SHARED_PREFERENCES_NAME,Constant.DataKey.INGREDIENT_LIST_KEY,recipesBean.getIngredients());
+                    SharedPreferencesHelper.saveKeyValue(getContext().getApplicationContext(), Constant.DataKey.SHARED_PREFERENCES_NAME,Constant.DataKey.RECIPE_NAME_KEY,recipesBean.getName());
+                    Timber.w("saveingredientList success");
+                    e.onSuccess(true);
+                } catch (Exception e1) {
+                    e.onError(e1);
+                }
+        }
+        }).subscribeOn(Schedulers.io()).subscribe(aBoolean ->
+                getContext().startService(new Intent(getContext(),WidgetService.class))
+        );
+
     }
 
     @Nullable

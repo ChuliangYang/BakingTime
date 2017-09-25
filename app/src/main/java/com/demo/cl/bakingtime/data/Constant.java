@@ -12,5 +12,8 @@ public class Constant {
     public static class DataKey{
         public static String RECIPE_BEAN="recipeBean";
         public static String STEP_BEAN="StepsBean";
+        public static String INGREDIENT_LIST_KEY="ingredient_list";
+        public static String RECIPE_NAME_KEY="recipe_name";
+        public static String SHARED_PREFERENCES_NAME="SP";
     }
 }
