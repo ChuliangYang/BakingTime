@@ -65,6 +65,7 @@ public class WidgetService extends IntentService {
                 intent.putStringArrayListExtra(Constant.DataKey.INGREDIENT_LIST_KEY,ingredientsName);
                 views.setRemoteAdapter(R.id.lv_ingredient_list, intent);
                 views.setTextViewText(R.id.tv_recipe_name,recipeName);
+
                 appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.lv_ingredient_list);
                 appWidgetManager.updateAppWidget(appWidgetId,views);
                 Timber.e(" appWidgetManager.updateAppWidget(appWidgetId,views);");

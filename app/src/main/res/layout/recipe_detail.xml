@@ -11,6 +11,7 @@
         android:layout_height="?actionBarSize"
         style="?actionBarStyle"
         app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationContentDescription="@string/navigation_content_describe"
         app:titleTextColor="@android:color/white"
         android:background="?colorPrimary"
         />
