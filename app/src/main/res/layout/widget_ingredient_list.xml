@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_recipe_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/alegreya"
         android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
+        android:fontFamily="@font/alegreya"
         android:padding="5dp"
+        android:textColor="@android:color/white"
         android:textSize="16sp"
-        tools:text="roast duck"
-        />
+        tools:text="roast duck" />
 
     <ListView
         android:id="@+id/lv_ingredient_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -10,5 +10,6 @@ import java.util.List;
 
 public interface OnRecipeListResponse {
     void OnRecipeListResponseSuccess(List<RecipesBean> recipesBeans);
+
     void OnRecipeListResponseFailed();
 }

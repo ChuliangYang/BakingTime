@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.demo.cl.bakingtime.R;
@@ -46,17 +45,17 @@ public class StepsAdapter extends RecyclerView.Adapter {
         if (position == 0) {
             stepViewHolder.vPlaceHolder.setVisibility(View.VISIBLE);
             stepViewHolder.setIsRecyclable(false);
-        } else if (position==recipesBean.getSteps().size()-1) {
+        } else if (position == recipesBean.getSteps().size() - 1) {
             stepViewHolder.vPlaceHolder.setVisibility(View.GONE);
             stepViewHolder.setIsRecyclable(false);
-            stepViewHolder.tvStepSum.setPadding(0,0,0,DisplayHelper.dip2px(context,0));
-            stepViewHolder.cl_step_item.setPadding(0,0,0,DisplayHelper.dip2px(context,24));
+            stepViewHolder.tvStepSum.setPadding(0, 0, 0, DisplayHelper.dip2px(context, 0));
+            stepViewHolder.cl_step_item.setPadding(0, 0, 0, DisplayHelper.dip2px(context, 24));
             stepViewHolder.iv_line.setVisibility(View.GONE);
         } else {
             stepViewHolder.vPlaceHolder.setVisibility(View.GONE);
             stepViewHolder.setIsRecyclable(true);
         }
-        stepViewHolder.tvStep.setText(String.valueOf(position+1));
+        stepViewHolder.tvStep.setText(String.valueOf(position + 1));
         stepViewHolder.tvStepTitle.setText(recipesBean.getSteps().get(position).getShortDescription());
         stepViewHolder.tvStepSum.setText(recipesBean.getSteps().get(position).getDescription());
     }
@@ -80,18 +79,19 @@ public class StepsAdapter extends RecyclerView.Adapter {
         TextView tvStep;
         @BindView(R.id.cl_step_item)
         ConstraintLayout cl_step_item;
+
         public StepViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
+            ButterKnife.bind(this, view);
             view.setOnClickListener(itemView -> {
                 if (!context.getResources().getBoolean(R.bool.isTablet)) {
                     EventBus.getDefault().removeStickyEvent(EventHelper.StepsBeanMessage.class);
-                    EventBus.getDefault().postSticky(EventHelper.create().buildStepsBeanMessage(getAdapterPosition(),recipesBean));
-                    Intent intent=new Intent(context, StepDetailActivity.class);
+                    EventBus.getDefault().postSticky(EventHelper.create().buildStepsBeanMessage(getAdapterPosition(), recipesBean));
+                    Intent intent = new Intent(context, StepDetailActivity.class);
                     context.startActivity(intent);
                 } else {
                     EventBus.getDefault().removeStickyEvent(EventHelper.StepsBeanMessage.class);
-                    EventBus.getDefault().postSticky(EventHelper.create().buildStepsBeanMessage(getAdapterPosition(),recipesBean).setRefreshFragment(true));
+                    EventBus.getDefault().postSticky(EventHelper.create().buildStepsBeanMessage(getAdapterPosition(), recipesBean).setRefreshFragment(true));
                 }
             });
         }

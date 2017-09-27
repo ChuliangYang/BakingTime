@@ -4,8 +4,7 @@
     android:drawable="@drawable/ic_cross_black"
     tools:targetApi="lollipop">
     <target
-        android:duration="1200"
         android:name="@string/cross_path_name"
         android:animation="@animator/cross_to_tick"
-        />
+        android:duration="1200" />
 </animated-vector>

@@ -10,7 +10,7 @@ import android.util.AttributeSet;
  */
 
 public class DynamicHeightImageView extends AppCompatImageView {
-    private float widthHeightRatio=1.5f;
+    private float widthHeightRatio = 1.5f;
 
     public DynamicHeightImageView(Context context) {
         super(context);
@@ -28,14 +28,14 @@ public class DynamicHeightImageView extends AppCompatImageView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredWidth = getMeasuredWidth();
-        setMeasuredDimension(measuredWidth, (int) (measuredWidth/widthHeightRatio));
-    }
-
-    public void setWightHeightRatio(float widthHeightRatio) {
-        this.widthHeightRatio = widthHeightRatio;
+        setMeasuredDimension(measuredWidth, (int) (measuredWidth / widthHeightRatio));
     }
 
     public float getWightHeightRatio() {
         return widthHeightRatio;
+    }
+
+    public void setWightHeightRatio(float widthHeightRatio) {
+        this.widthHeightRatio = widthHeightRatio;
     }
 }

@@ -35,7 +35,7 @@ import static android.view.View.FOCUS_RIGHT;
  * Created by CL on 9/18/17.
  */
 
-public class StepDetailFragment extends Fragment implements OnScroll{
+public class StepDetailFragment extends Fragment implements OnScroll {
     Toolbar tbStepDetail;
     ViewPager vpStepDetail;
     ImageView ivPrevious;
@@ -43,9 +43,9 @@ public class StepDetailFragment extends Fragment implements OnScroll{
     RelativeLayout rlNavigate;
     WrapContentViewPager wrapContentViewPager;
     ScrollView sv_step_detail;
+    boolean FlagOnce = true;
     private EventHelper.StepsBeanMessage stepsBeanMessage;
     private int currentPosition;
-    boolean FlagOnce=true;
     private int scroll_state;
 
 
@@ -53,21 +53,21 @@ public class StepDetailFragment extends Fragment implements OnScroll{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            stepsBeanMessage= (EventHelper.StepsBeanMessage) savedInstanceState.get("stepsBeanMessage");
-            currentPosition= (int) savedInstanceState.get("currentPosition");
+            stepsBeanMessage = (EventHelper.StepsBeanMessage) savedInstanceState.get("stepsBeanMessage");
+            currentPosition = (int) savedInstanceState.get("currentPosition");
         } else {
-            stepsBeanMessage=EventBus.getDefault().getStickyEvent(EventHelper.StepsBeanMessage.class);
-            currentPosition=stepsBeanMessage.getCurrent_position();
+            stepsBeanMessage = EventBus.getDefault().getStickyEvent(EventHelper.StepsBeanMessage.class);
+            currentPosition = stepsBeanMessage.getCurrent_position();
         }
         Bundle bundle = new Bundle();
 
         if (stepsBeanMessage != null) {
             bundle.putParcelable("stepsBeanMessage", stepsBeanMessage);
             setArguments(bundle);
-        } else if (getArguments()!=null&&getArguments().get("stepsBeanMessage") != null) {
+        } else if (getArguments() != null && getArguments().get("stepsBeanMessage") != null) {
             stepsBeanMessage = (EventHelper.StepsBeanMessage) getArguments().get("stepsBeanMessage");
         } else {
-            stepsBeanMessage=EventHelper.create().buildStepsBeanMessage(0,new RecipesBean());
+            stepsBeanMessage = EventHelper.create().buildStepsBeanMessage(0, new RecipesBean());
         }
 
         PlayerHelper.getInstance().initPlayer(getContext());
@@ -88,24 +88,24 @@ public class StepDetailFragment extends Fragment implements OnScroll{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.step_detail, container, false);
-        Configuration cf= this.getResources().getConfiguration(); //获取设置的配置信息
-        int ori = cf.orientation ; //获取屏幕方向
-        if(ori == cf.ORIENTATION_LANDSCAPE){
+        Configuration cf = this.getResources().getConfiguration(); //获取设置的配置信息
+        int ori = cf.orientation; //获取屏幕方向
+        if (ori == cf.ORIENTATION_LANDSCAPE) {
             EventBus.getDefault().removeStickyEvent(EventHelper.ScrollMessage.class);
             EventBus.getDefault().postSticky(EventHelper.create().buildScrollMessage(this));
 
             //横屏
-            wrapContentViewPager=contentView.findViewById(R.id.wcvp_step_detail);
-            sv_step_detail=contentView.findViewById(R.id.sv_step_detail);
-            StepDetailPagerAdapter stepDetailPagerAdapter=new StepDetailPagerAdapter(getChildFragmentManager(),getContext());
+            wrapContentViewPager = contentView.findViewById(R.id.wcvp_step_detail);
+            sv_step_detail = contentView.findViewById(R.id.sv_step_detail);
+            StepDetailPagerAdapter stepDetailPagerAdapter = new StepDetailPagerAdapter(getChildFragmentManager(), getContext());
             stepDetailPagerAdapter.setRecipesBean(stepsBeanMessage.getRecipesBean());
             wrapContentViewPager.setAdapter(stepDetailPagerAdapter);
-            wrapContentViewPager.setCurrentItem(currentPosition,false);
+            wrapContentViewPager.setCurrentItem(currentPosition, false);
             stepDetailPagerAdapter.setOnStepNavigation(new OnStepNavigation() {
                 @Override
                 public void onPrevious() {
-                    if (wrapContentViewPager.getCurrentItem()>0) {
-                        PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                    if (wrapContentViewPager.getCurrentItem() > 0) {
+                        PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
                         PlayerHelper.getInstance().stopPlayer();
                         wrapContentViewPager.arrowScroll(FOCUS_LEFT);
                     }
@@ -113,8 +113,8 @@ public class StepDetailFragment extends Fragment implements OnScroll{
 
                 @Override
                 public void onNext() {
-                    if (wrapContentViewPager.getCurrentItem()<wrapContentViewPager.getAdapter().getCount()-1) {
-                        PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                    if (wrapContentViewPager.getCurrentItem() < wrapContentViewPager.getAdapter().getCount() - 1) {
+                        PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
                         PlayerHelper.getInstance().stopPlayer();
                         wrapContentViewPager.arrowScroll(FOCUS_RIGHT);
                     }
@@ -129,49 +129,47 @@ public class StepDetailFragment extends Fragment implements OnScroll{
 
                 @Override
                 public void onPageSelected(int position) {
-                    currentPosition=position;
+                    currentPosition = position;
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
-                    if (state == SCROLL_STATE_DRAGGING ) {
+                    if (state == SCROLL_STATE_DRAGGING) {
                         if (FlagOnce) {
-                            PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                            PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
                             PlayerHelper.getInstance().stopPlayer();
-                            FlagOnce=false;
+                            FlagOnce = false;
                         }
                     } else {
-                        FlagOnce=true;
+                        FlagOnce = true;
                     }
                 }
             });
 
-        }else if(ori == cf.ORIENTATION_PORTRAIT){
+        } else if (ori == cf.ORIENTATION_PORTRAIT) {
             //竖屏
-            tbStepDetail=contentView.findViewById(R.id.tb_recipe);
-            vpStepDetail=contentView.findViewById(R.id.vp_step_detail);
-            ivPrevious =contentView.findViewById(R.id.iv_previous);
-            ivNext=contentView.findViewById(R.id.iv_next);
-            rlNavigate=contentView.findViewById(R.id.rl_navigate);
+            tbStepDetail = contentView.findViewById(R.id.tb_recipe);
+            vpStepDetail = contentView.findViewById(R.id.vp_step_detail);
+            ivPrevious = contentView.findViewById(R.id.iv_previous);
+            ivNext = contentView.findViewById(R.id.iv_next);
+            rlNavigate = contentView.findViewById(R.id.rl_navigate);
 
             if (getResources().getBoolean(R.bool.isTablet)) {
                 tbStepDetail.setVisibility(View.GONE);
                 rlNavigate.setVisibility(View.GONE);
-            } else {
-
             }
 
-            StepDetailPagerAdapter stepDetailPagerAdapter=new StepDetailPagerAdapter(getChildFragmentManager(),getContext());
+            StepDetailPagerAdapter stepDetailPagerAdapter = new StepDetailPagerAdapter(getChildFragmentManager(), getContext());
             stepDetailPagerAdapter.setRecipesBean(stepsBeanMessage.getRecipesBean());
             vpStepDetail.setAdapter(stepDetailPagerAdapter);
-            vpStepDetail.setCurrentItem(currentPosition,false);
+            vpStepDetail.setCurrentItem(currentPosition, false);
             tbStepDetail.setTitle(stepsBeanMessage.getRecipesBean().getName());
             tbStepDetail.setNavigationOnClickListener(view -> getActivity().finish());
             vpStepDetail.setOffscreenPageLimit(1);
 
             ivPrevious.setOnClickListener(view -> {
-                if (vpStepDetail.getCurrentItem()>0) {
-                    PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                if (vpStepDetail.getCurrentItem() > 0) {
+                    PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
                     PlayerHelper.getInstance().stopPlayer();
                     vpStepDetail.arrowScroll(FOCUS_LEFT);
                 }
@@ -181,8 +179,8 @@ public class StepDetailFragment extends Fragment implements OnScroll{
 
             ivNext.setOnClickListener(view -> {
 
-                if (vpStepDetail.getCurrentItem()<vpStepDetail.getAdapter().getCount()-1) {
-                    PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                if (vpStepDetail.getCurrentItem() < vpStepDetail.getAdapter().getCount() - 1) {
+                    PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
                     PlayerHelper.getInstance().stopPlayer();
                     vpStepDetail.arrowScroll(FOCUS_RIGHT);
                 }
@@ -198,19 +196,19 @@ public class StepDetailFragment extends Fragment implements OnScroll{
 
                 @Override
                 public void onPageSelected(int position) {
-                    currentPosition=position;
+                    currentPosition = position;
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
                     if (state == SCROLL_STATE_DRAGGING) {
                         if (FlagOnce) {
-                            PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+                            PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
                             PlayerHelper.getInstance().stopPlayer();
-                            FlagOnce=false;
+                            FlagOnce = false;
                         }
                     } else {
-                        FlagOnce=true;
+                        FlagOnce = true;
                     }
                 }
             });
@@ -221,9 +219,9 @@ public class StepDetailFragment extends Fragment implements OnScroll{
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("stepsBeanMessage",stepsBeanMessage);
-        outState.putInt("currentPosition",currentPosition);
-        PlayerHelper.getInstance().putProgress(currentPosition,PlayerHelper.getInstance().getCurrentVideoProgress());
+        outState.putParcelable("stepsBeanMessage", stepsBeanMessage);
+        outState.putInt("currentPosition", currentPosition);
+        PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
         PlayerHelper.getInstance().setKeepStateFlag(true);
         super.onSaveInstanceState(outState);
     }
@@ -255,14 +253,14 @@ public class StepDetailFragment extends Fragment implements OnScroll{
 
     @Override
     public void setScrollX(int x) {
-        if (sv_step_detail!=null) {
+        if (sv_step_detail != null) {
             sv_step_detail.setScrollX(x);
         }
     }
 
     @Override
     public void setScrollY(int y) {
-        if (sv_step_detail!=null) {
+        if (sv_step_detail != null) {
             sv_step_detail.post(() -> {
                 sv_step_detail.setScrollY(y);
             });

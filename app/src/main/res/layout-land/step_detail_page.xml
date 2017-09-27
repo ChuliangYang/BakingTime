@@ -25,56 +25,55 @@
         android:id="@+id/tv_describe_land"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/player_view_land"
+        android:layout_marginBottom="100dp"
         android:fontFamily="@font/alegreya"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:paddingTop="10dp"
         android:textSize="16sp"
-        android:typeface="serif"
-        android:layout_below="@+id/player_view_land"
-        android:layout_marginBottom="100dp" />
+        android:typeface="serif" />
 
     <RelativeLayout
         android:id="@+id/rl_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="5dp"
-        >
+        android:padding="5dp">
 
-    <ImageView
-        android:id="@+id/iv_previous_land"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        app:srcCompat="@drawable/ic_previous" />
+        <ImageView
+            android:id="@+id/iv_previous_land"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            app:srcCompat="@drawable/ic_previous" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="17sp"
-        android:layout_marginLeft="5dp"
-        android:gravity="center"
-        android:fontFamily="@font/alegreya"
-        android:layout_toEndOf="@id/iv_previous_land"
-        android:text="@string/previous" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@id/iv_previous_land"
+            android:fontFamily="@font/alegreya"
+            android:gravity="center"
+            android:text="@string/previous"
+            android:textSize="17sp" />
 
-    <ImageView
-        android:id="@+id/iv_next_land"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        app:srcCompat="@drawable/ic_next" />
+        <ImageView
+            android:id="@+id/iv_next_land"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_next" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:layout_toStartOf="@id/iv_next_land"
-        android:textSize="17sp"
-        android:gravity="center"
-        android:fontFamily="@font/alegreya"
-        android:text="@string/next" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toStartOf="@id/iv_next_land"
+            android:fontFamily="@font/alegreya"
+            android:gravity="center"
+            android:text="@string/next"
+            android:textSize="17sp" />
 
     </RelativeLayout>
 </RelativeLayout>

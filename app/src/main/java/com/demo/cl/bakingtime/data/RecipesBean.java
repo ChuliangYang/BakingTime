@@ -13,12 +13,37 @@ import java.util.List;
 
 public class RecipesBean implements Parcelable {
 
+    public static final Parcelable.Creator<RecipesBean> CREATOR = new Parcelable.Creator<RecipesBean>() {
+        @Override
+        public RecipesBean createFromParcel(Parcel source) {
+            return new RecipesBean(source);
+        }
+
+        @Override
+        public RecipesBean[] newArray(int size) {
+            return new RecipesBean[size];
+        }
+    };
     private String id;
     private String name;
     private String servings;
     private String image;
     private List<IngredientsBean> ingredients;
     private List<StepsBean> steps;
+
+    public RecipesBean() {
+    }
+
+    protected RecipesBean(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.servings = in.readString();
+        this.image = in.readString();
+        this.ingredients = new ArrayList<IngredientsBean>();
+        in.readList(this.ingredients, IngredientsBean.class.getClassLoader());
+        this.steps = new ArrayList<StepsBean>();
+        in.readList(this.steps, StepsBean.class.getClassLoader());
+    }
 
     public String getId() {
         return id;
@@ -68,12 +93,47 @@ public class RecipesBean implements Parcelable {
         this.steps = steps;
     }
 
-    public static class IngredientsBean implements Parcelable,Serializable {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.servings);
+        dest.writeString(this.image);
+        dest.writeList(this.ingredients);
+        dest.writeList(this.steps);
+    }
+
+    public static class IngredientsBean implements Parcelable, Serializable {
+
+        public static final Creator<IngredientsBean> CREATOR = new Creator<IngredientsBean>() {
+            @Override
+            public IngredientsBean createFromParcel(Parcel source) {
+                return new IngredientsBean(source);
+            }
+
+            @Override
+            public IngredientsBean[] newArray(int size) {
+                return new IngredientsBean[size];
+            }
+        };
         private String quantity;
         private String measure;
         private String ingredient;
-        private Boolean checked=false;
+        private Boolean checked = false;
+
+        public IngredientsBean() {
+        }
+
+        protected IngredientsBean(Parcel in) {
+            this.quantity = in.readString();
+            this.measure = in.readString();
+            this.ingredient = in.readString();
+        }
 
         public Boolean getChecked() {
             return checked;
@@ -118,36 +178,37 @@ public class RecipesBean implements Parcelable {
             dest.writeString(this.measure);
             dest.writeString(this.ingredient);
         }
-
-        public IngredientsBean() {
-        }
-
-        protected IngredientsBean(Parcel in) {
-            this.quantity = in.readString();
-            this.measure = in.readString();
-            this.ingredient = in.readString();
-        }
-
-        public static final Creator<IngredientsBean> CREATOR = new Creator<IngredientsBean>() {
-            @Override
-            public IngredientsBean createFromParcel(Parcel source) {
-                return new IngredientsBean(source);
-            }
-
-            @Override
-            public IngredientsBean[] newArray(int size) {
-                return new IngredientsBean[size];
-            }
-        };
     }
 
     public static class StepsBean implements Parcelable {
 
+        public static final Creator<StepsBean> CREATOR = new Creator<StepsBean>() {
+            @Override
+            public StepsBean createFromParcel(Parcel source) {
+                return new StepsBean(source);
+            }
+
+            @Override
+            public StepsBean[] newArray(int size) {
+                return new StepsBean[size];
+            }
+        };
         private String id;
         private String shortDescription;
         private String description;
         private String videoURL;
         private String thumbnailURL;
+
+        public StepsBean() {
+        }
+
+        protected StepsBean(Parcel in) {
+            this.id = in.readString();
+            this.shortDescription = in.readString();
+            this.description = in.readString();
+            this.videoURL = in.readString();
+            this.thumbnailURL = in.readString();
+        }
 
         public String getId() {
             return id;
@@ -202,69 +263,5 @@ public class RecipesBean implements Parcelable {
             dest.writeString(this.videoURL);
             dest.writeString(this.thumbnailURL);
         }
-
-        public StepsBean() {
-        }
-
-        protected StepsBean(Parcel in) {
-            this.id = in.readString();
-            this.shortDescription = in.readString();
-            this.description = in.readString();
-            this.videoURL = in.readString();
-            this.thumbnailURL = in.readString();
-        }
-
-        public static final Creator<StepsBean> CREATOR = new Creator<StepsBean>() {
-            @Override
-            public StepsBean createFromParcel(Parcel source) {
-                return new StepsBean(source);
-            }
-
-            @Override
-            public StepsBean[] newArray(int size) {
-                return new StepsBean[size];
-            }
-        };
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.id);
-        dest.writeString(this.name);
-        dest.writeString(this.servings);
-        dest.writeString(this.image);
-        dest.writeList(this.ingredients);
-        dest.writeList(this.steps);
-    }
-
-    public RecipesBean() {
-    }
-
-    protected RecipesBean(Parcel in) {
-        this.id = in.readString();
-        this.name = in.readString();
-        this.servings = in.readString();
-        this.image = in.readString();
-        this.ingredients = new ArrayList<IngredientsBean>();
-        in.readList(this.ingredients, IngredientsBean.class.getClassLoader());
-        this.steps = new ArrayList<StepsBean>();
-        in.readList(this.steps, StepsBean.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<RecipesBean> CREATOR = new Parcelable.Creator<RecipesBean>() {
-        @Override
-        public RecipesBean createFromParcel(Parcel source) {
-            return new RecipesBean(source);
-        }
-
-        @Override
-        public RecipesBean[] newArray(int size) {
-            return new RecipesBean[size];
-        }
-    };
 }

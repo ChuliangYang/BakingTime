@@ -1,43 +1,33 @@
 package com.demo.cl.bakingtime.service;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.demo.cl.bakingtime.R;
 import com.demo.cl.bakingtime.data.Constant;
-import com.demo.cl.bakingtime.data.RecipesBean;
-import com.demo.cl.bakingtime.helper.SharedPreferencesHelper;
 
 import java.util.List;
 
-import io.reactivex.Single;
-import io.reactivex.SingleObserver;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class IngredientListProviderService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         Timber.e("RemoteViewsFactory");
-        return new IngredientListFactory(getApplicationContext(),intent);
+        return new IngredientListFactory(getApplicationContext(), intent);
     }
 
-    class IngredientListFactory implements RemoteViewsService.RemoteViewsFactory{
+    class IngredientListFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context context;
         private Intent intent;
         private List<String> ingredients;
 
-        public IngredientListFactory(Context context,Intent intent) {
-            this.context=context;
-            this.intent=intent;
-            ingredients=intent.getStringArrayListExtra(Constant.DataKey.INGREDIENT_LIST_KEY);
+        public IngredientListFactory(Context context, Intent intent) {
+            this.context = context;
+            this.intent = intent;
+            ingredients = intent.getStringArrayListExtra(Constant.DataKey.INGREDIENT_LIST_KEY);
         }
 
         @Override
@@ -47,7 +37,7 @@ public class IngredientListProviderService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            ingredients=intent.getStringArrayListExtra(Constant.DataKey.INGREDIENT_LIST_KEY);
+            ingredients = intent.getStringArrayListExtra(Constant.DataKey.INGREDIENT_LIST_KEY);
         }
 
         @Override
@@ -57,13 +47,13 @@ public class IngredientListProviderService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return ingredients!=null?ingredients.size():0;
+            return ingredients != null ? ingredients.size() : 0;
         }
 
         @Override
         public RemoteViews getViewAt(int i) {
-            RemoteViews rv=new RemoteViews(context.getPackageName(), R.layout.item_widget_ingredient);
-            rv.setTextViewText(R.id.tv_ingredient_name,ingredients.get(i));
+            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.item_widget_ingredient);
+            rv.setTextViewText(R.id.tv_ingredient_name, ingredients.get(i));
             return rv;
         }
 

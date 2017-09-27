@@ -8,10 +8,11 @@ import java.util.HashMap;
  * Created by CL on 9/14/17.
  */
 
-public  class LocalImageHelper {
+public class LocalImageHelper {
     public static HashMap imagePathMap;
+
     static {
-        imagePathMap=new HashMap();
+        imagePathMap = new HashMap();
 //        imagePathMap.put("Nutella Pie", R.drawable.nutella_pie);
         imagePathMap.put("Brownies", R.drawable.brownies);
         imagePathMap.put("Cheesecake", R.drawable.cheesecake);

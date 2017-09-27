@@ -14,7 +14,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             // DebugTree has all usual logging functionality
             Timber.plant(new Timber.DebugTree());
         }

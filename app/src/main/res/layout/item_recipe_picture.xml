@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cv_recipe"
+    style="@style/CardViewTileStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/CardViewTileStyle"
-    android:background="@android:color/transparent"
-    >
+    android:background="@android:color/transparent">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:paddingBottom="@dimen/recipe_list_padding_top_bottom"
         android:paddingLeft="@dimen/recipe_list_padding_left_right"
         android:paddingRight="@dimen/recipe_list_padding_left_right"
-        android:paddingTop="@dimen/recipe_list_padding_top_bottom"
-        android:paddingBottom="@dimen/recipe_list_padding_top_bottom"
-        >
-    <com.demo.cl.bakingtime.widget.DynamicHeightImageView
-        android:id="@+id/iv_recipe"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        tools:background="@drawable/brownies"
+        android:paddingTop="@dimen/recipe_list_padding_top_bottom">
 
-        tools:layout_height="wrap_content"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/background_scrim"
-        >
-        <TextView
-            android:id="@+id/tv_recipe"
+        <com.demo.cl.bakingtime.widget.DynamicHeightImageView
+            android:id="@+id/iv_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            tools:background="@drawable/brownies"
+
+            tools:layout_height="wrap_content" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/SingleTextScrim.white"
-            tools:text="cake"
-            />
-    </LinearLayout>
+            android:layout_gravity="bottom"
+            android:background="@color/background_scrim">
+
+            <TextView
+                android:id="@+id/tv_recipe"
+                style="@style/SingleTextScrim.white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="cake" />
+        </LinearLayout>
     </FrameLayout>
 </android.support.v7.widget.CardView>

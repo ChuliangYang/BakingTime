@@ -2,13 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sv_step_detail"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
-<com.demo.cl.bakingtime.widget.WrapContentViewPager
-    android:id="@+id/wcvp_step_detail"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="0dp"
-    android:layout_marginBottom="0dp"
-    />
+    android:layout_height="wrap_content">
+
+    <com.demo.cl.bakingtime.widget.WrapContentViewPager
+        android:id="@+id/wcvp_step_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:paddingBottom="0dp" />
 </ScrollView>

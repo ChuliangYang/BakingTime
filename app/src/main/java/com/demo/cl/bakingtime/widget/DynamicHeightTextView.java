@@ -2,16 +2,14 @@ package com.demo.cl.bakingtime.widget;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 /**
  * Created by CL on 9/14/17.
  */
 
 public class DynamicHeightTextView extends AppCompatTextView {
-    private float widthHeightRatio=1.5f;
+    private float widthHeightRatio = 1.5f;
 
     public DynamicHeightTextView(Context context) {
         super(context);
@@ -30,6 +28,6 @@ public class DynamicHeightTextView extends AppCompatTextView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int measuredWidth = getMeasuredWidth();
-        setMeasuredDimension(measuredWidth, (int) (measuredWidth/widthHeightRatio));
+        setMeasuredDimension(measuredWidth, (int) (measuredWidth / widthHeightRatio));
     }
 }

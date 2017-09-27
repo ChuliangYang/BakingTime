@@ -22,7 +22,7 @@ import timber.log.Timber;
 public class SharedPreferencesHelper {
 
     public static void saveObject(Context context, String preferenceName, String key, List<?> object) throws Exception {
-        if(object instanceof Serializable) {
+        if (object instanceof Serializable) {
             Timber.w("object can save,saving...");
             SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceName, context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -38,14 +38,14 @@ public class SharedPreferencesHelper {
                 e.printStackTrace();
                 Timber.w("iO error");
             }
-        }else {
+        } else {
             throw new Exception("Object must implements Serializable");
         }
     }
 
-    public static List<?> getObject(Context context, String preferenceName,String key) {
+    public static List<?> getObject(Context context, String preferenceName, String key) {
         Timber.w("start getting object");
-        SharedPreferences sharedPreferences=context.getSharedPreferences(preferenceName,context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceName, context.MODE_PRIVATE);
         String temp = sharedPreferences.getString(key, "");
         try {
             return StringToList(temp);
@@ -74,7 +74,7 @@ public class SharedPreferencesHelper {
     }
 
 
-    public static String listToString(List<?> list)throws IOException {
+    public static String listToString(List<?> list) throws IOException {
         // 实例化一个ByteArrayOutputStream对象，用来装载压缩后的字节文件。
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         // 然后将得到的字符数据装载到ObjectOutputStream
@@ -105,9 +105,9 @@ public class SharedPreferencesHelper {
         return WeatherList;
     }
 
-    public static void saveKeyValue(Context context, String preferenceName, String key, Object object){
-        SharedPreferences sharedPreferences=context.getSharedPreferences(preferenceName,context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
+    public static void saveKeyValue(Context context, String preferenceName, String key, Object object) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceName, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if (object instanceof String) {
             editor.putString(key, (String) object);
@@ -126,8 +126,8 @@ public class SharedPreferencesHelper {
     }
 
 
-    public static Object getValueByKey(Context context, String preferenceName,String key,Object object){
-        SharedPreferences sharedPreferences=context.getSharedPreferences(preferenceName,context.MODE_PRIVATE);
+    public static Object getValueByKey(Context context, String preferenceName, String key, Object object) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceName, context.MODE_PRIVATE);
         if (object instanceof String) {
             return sharedPreferences.getString(key, (String) object);
         } else if (object instanceof Integer) {
@@ -142,7 +142,6 @@ public class SharedPreferencesHelper {
             return sharedPreferences.getString(key, object.toString());
         }
     }
-
 
 
 }

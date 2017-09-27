@@ -10,8 +10,8 @@ import okhttp3.OkHttpClient;
 
 public class OkHttpHelper {
 
-    public static OkHttpClient BuildCustomOkHttpClient(){
-        return  new OkHttpClient.Builder()
+    public static OkHttpClient BuildCustomOkHttpClient() {
+        return new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)

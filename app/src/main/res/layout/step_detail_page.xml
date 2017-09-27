@@ -3,22 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:resize_mode="fill"
-      />
+        app:resize_mode="fill" />
+
     <ScrollView
-        android:layout_below="@id/player_view"
         android:id="@+id/sv_step_describe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:background="@android:color/holo_blue_bright"
-        >
+        android:layout_below="@id/player_view"
+        tools:background="@android:color/holo_blue_bright">
 
         <TextView
             android:id="@+id/tv_describe"

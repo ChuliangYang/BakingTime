@@ -18,7 +18,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 /**
  * Created by CL on 9/16/17.
@@ -40,19 +39,19 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         if (savedInstanceState != null) {
-            recipesBean= (RecipesBean) savedInstanceState.get("recipesBean");
-        } else if (EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class)!=null) {
-                recipesBean = EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
+            recipesBean = (RecipesBean) savedInstanceState.get("recipesBean");
+        } else if (EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class) != null) {
+            recipesBean = EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
         }
 
         if (recipesBean != null) {
             Bundle bundle = new Bundle();
             bundle.putParcelable("recipesBean", recipesBean);
             setArguments(bundle);
-        } else if (getArguments()!=null&&getArguments().get("recipesBean") != null) {
+        } else if (getArguments() != null && getArguments().get("recipesBean") != null) {
             recipesBean = (RecipesBean) getArguments().get("recipesBean");
         } else {
-            recipesBean=new RecipesBean();
+            recipesBean = new RecipesBean();
         }
 
 
@@ -69,7 +68,7 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment {
         } else {
             tbRecipeDetail.setVisibility(View.GONE);
         }
-        recipeDetailPagerAdapter =new RecipeDetailPagerAdapter(getChildFragmentManager());
+        recipeDetailPagerAdapter = new RecipeDetailPagerAdapter(getChildFragmentManager());
         vpRecipe.setAdapter(recipeDetailPagerAdapter);
         tlRecipe.setupWithViewPager(vpRecipe);
         return contentView;
@@ -77,7 +76,7 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("recipesBean",recipesBean);
+        outState.putParcelable("recipesBean", recipesBean);
         super.onSaveInstanceState(outState);
     }
 

@@ -1,10 +1,9 @@
-
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
-    dataBinding.enabled=true
+    dataBinding.enabled = true
     defaultConfig {
         applicationId "com.demo.cl.bakingtime"
         minSdkVersion versions.minSdkVersion

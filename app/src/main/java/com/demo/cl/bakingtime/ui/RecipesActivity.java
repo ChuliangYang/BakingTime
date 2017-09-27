@@ -13,10 +13,7 @@ import com.demo.cl.bakingtime.adapter.RecipeListAdapter;
 import com.demo.cl.bakingtime.data.RecipesBean;
 import com.demo.cl.bakingtime.databinding.ActivityRecipeListBinding;
 import com.demo.cl.bakingtime.helper.CastHelper;
-import com.demo.cl.bakingtime.helper.EventHelper;
 import com.demo.cl.bakingtime.request.RecipeListRequest;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -25,30 +22,29 @@ import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class RecipesActivity extends AppCompatActivity implements OnRecipeListResponse{
-     ActivityRecipeListBinding viewBinding;
-     RecyclerView rvRecipe;
-     RecipeListAdapter recipeListAdapter;
-     RecipeListModel recipeListModel;
+public class RecipesActivity extends AppCompatActivity implements OnRecipeListResponse {
+    ActivityRecipeListBinding viewBinding;
+    RecyclerView rvRecipe;
+    RecipeListAdapter recipeListAdapter;
+    RecipeListModel recipeListModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewBinding=DataBindingUtil.setContentView(this,R.layout.activity_recipe_list);
-        rvRecipe=viewBinding.rvRecipe;
+        viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_recipe_list);
+        rvRecipe = viewBinding.rvRecipe;
 
         new RecipeListRequest(this).start();
-        rvRecipe.setLayoutManager(new GridLayoutManager(this,getResources().getInteger(R.integer.GridNumber)));
+        rvRecipe.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.GridNumber)));
         rvRecipe.setHasFixedSize(true);
     }
-
 
 
     @Override
     public void OnRecipeListResponseSuccess(List<RecipesBean> recipesBeans) {
         Single.create((SingleOnSubscribe<RecipeListAdapter>) e -> {
-            recipeListModel=CastHelper.RecipesBeanToRecipeListModel(recipesBeans);
-            recipeListAdapter =new RecipeListAdapter(recipeListModel,this);
+            recipeListModel = CastHelper.RecipesBeanToRecipeListModel(recipesBeans);
+            recipeListAdapter = new RecipeListAdapter(recipeListModel, this);
             recipeListAdapter.setRecipesBeans(recipesBeans);
             e.onSuccess(recipeListAdapter);
         }).subscribeOn(Schedulers.computation())

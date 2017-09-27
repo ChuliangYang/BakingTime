@@ -6,5 +6,6 @@ package com.demo.cl.bakingtime.Interface;
 
 public interface OnStepNavigation {
     void onPrevious();
+
     void onNext();
 }

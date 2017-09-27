@@ -11,8 +11,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 
 import java.util.HashMap;
 
-import javax.security.auth.PrivateCredentialPermission;
-
 /**
  * Created by CL on 9/21/17.
  */
@@ -22,23 +20,22 @@ public class PlayerHelper {
 
     SimpleExoPlayer simpleExoPlayer;
 
-    private HashMap<Integer,Long> currentProgress=new HashMap();
+    private HashMap<Integer, Long> currentProgress = new HashMap();
 
 
-
-    private boolean KeepStateFlag=false;
+    private boolean KeepStateFlag = false;
 
     private Context context;
-
-    public static PlayerHelper getInstance() {
-        return ourInstance;
-    }
 
     private PlayerHelper() {
 
     }
 
-    public Object getPlayer(Context context){
+    public static PlayerHelper getInstance() {
+        return ourInstance;
+    }
+
+    public Object getPlayer(Context context) {
         if (simpleExoPlayer == null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
@@ -46,12 +43,13 @@ public class PlayerHelper {
         }
         return simpleExoPlayer;
     }
-    public Object initPlayer(Context context){
+
+    public Object initPlayer(Context context) {
         if (simpleExoPlayer == null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
-            this.context=context;
+            this.context = context;
         } else {
             simpleExoPlayer.stop();
         }
@@ -59,7 +57,7 @@ public class PlayerHelper {
 
     }
 
-    public void releasePlayer(){
+    public void releasePlayer() {
         if (!KeepStateFlag) {
             if (simpleExoPlayer != null) {
                 simpleExoPlayer.release();
@@ -69,21 +67,21 @@ public class PlayerHelper {
         }
     }
 
-    public void stopPlayer(){
+    public void stopPlayer() {
         if (simpleExoPlayer != null) {
             simpleExoPlayer.stop();
         }
     }
 
-    public void putProgress(int position,long ms){
-        currentProgress.put(position,ms);
+    public void putProgress(int position, long ms) {
+        currentProgress.put(position, ms);
     }
 
-    public Long getProgress(int position){
+    public Long getProgress(int position) {
         return currentProgress.get(position);
     }
 
-    public long getCurrentVideoProgress(){
+    public long getCurrentVideoProgress() {
         if (simpleExoPlayer != null) {
             return simpleExoPlayer.getCurrentPosition();
         } else {

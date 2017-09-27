@@ -6,5 +6,6 @@ package com.demo.cl.bakingtime.Interface;
 
 public interface OnScroll {
     void setScrollX(int x);
+
     void setScrollY(int y);
 }

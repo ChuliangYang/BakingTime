@@ -20,16 +20,11 @@ import com.demo.cl.bakingtime.service.WidgetService;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.sql.Time;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created by CL on 9/16/17.
@@ -45,8 +40,8 @@ public class IngredientFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            recipesBean= (RecipesBean) savedInstanceState.get("recipesBean");
-        } else if (EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class)!=null) {
+            recipesBean = (RecipesBean) savedInstanceState.get("recipesBean");
+        } else if (EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class) != null) {
             recipesBean = EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class).getRecipesBean();
         }
 
@@ -54,25 +49,25 @@ public class IngredientFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putParcelable("recipesBean", recipesBean);
             setArguments(bundle);
-        } else if (getArguments()!=null&&getArguments().get("recipesBean") != null) {
+        } else if (getArguments() != null && getArguments().get("recipesBean") != null) {
             recipesBean = (RecipesBean) getArguments().get("recipesBean");
         } else {
-            recipesBean=new RecipesBean();
+            recipesBean = new RecipesBean();
         }
 
 
         Single.create((SingleOnSubscribe<Boolean>) e -> {
-            if (recipesBean!=null) {
+            if (recipesBean != null) {
                 try {
-                    SharedPreferencesHelper.saveObject(getContext().getApplicationContext(), Constant.DataKey.SHARED_PREFERENCES_NAME,Constant.DataKey.INGREDIENT_LIST_KEY,recipesBean.getIngredients());
-                    SharedPreferencesHelper.saveKeyValue(getContext().getApplicationContext(), Constant.DataKey.SHARED_PREFERENCES_NAME,Constant.DataKey.RECIPE_NAME_KEY,recipesBean.getName());
+                    SharedPreferencesHelper.saveObject(getContext().getApplicationContext(), Constant.DataKey.SHARED_PREFERENCES_NAME, Constant.DataKey.INGREDIENT_LIST_KEY, recipesBean.getIngredients());
+                    SharedPreferencesHelper.saveKeyValue(getContext().getApplicationContext(), Constant.DataKey.SHARED_PREFERENCES_NAME, Constant.DataKey.RECIPE_NAME_KEY, recipesBean.getName());
                     e.onSuccess(true);
                 } catch (Exception e1) {
                     e.onError(e1);
                 }
-        }
+            }
         }).subscribeOn(Schedulers.io()).subscribe(aBoolean ->
-                getContext().startService(new Intent(getContext(),WidgetService.class))
+                getContext().startService(new Intent(getContext(), WidgetService.class))
         );
 
     }
@@ -83,15 +78,15 @@ public class IngredientFragment extends Fragment {
         View contentView = inflater.inflate(R.layout.ingredient_page, container, false);
         ButterKnife.bind(this, contentView);
 //        rvIngredient.setHasFixedSize(true);
-        rvIngredient.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-        IngredientAdapter ingredientAdapter=new IngredientAdapter(recipesBean,getContext());
+        rvIngredient.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        IngredientAdapter ingredientAdapter = new IngredientAdapter(recipesBean, getContext());
         rvIngredient.setAdapter(ingredientAdapter);
         return contentView;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("recipesBean",recipesBean);
+        outState.putParcelable("recipesBean", recipesBean);
         super.onSaveInstanceState(outState);
     }
 }
