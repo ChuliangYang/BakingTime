@@ -19,11 +19,18 @@
         android:layout_height="match_parent"
         tools:background="@android:color/holo_blue_bright"
         >
+
         <TextView
-            tools:text="describe"
             android:id="@+id/tv_describe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alegreya"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:typeface="serif"
+            tools:text="describe" />
 
     </ScrollView>
 

@@ -29,6 +29,7 @@
             android:id="@+id/rv_recipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@android:color/transparent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:layout_editor_absoluteY="58dp" />
     </android.support.design.widget.CoordinatorLayout>

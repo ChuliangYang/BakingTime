@@ -12,9 +12,9 @@ public  class LocalImageHelper {
     public static HashMap imagePathMap;
     static {
         imagePathMap=new HashMap();
-        imagePathMap.put("Nutella Pie", R.drawable.nutella_pie);
+//        imagePathMap.put("Nutella Pie", R.drawable.nutella_pie);
         imagePathMap.put("Brownies", R.drawable.brownies);
         imagePathMap.put("Cheesecake", R.drawable.cheesecake);
-        imagePathMap.put("Yellow Cake", R.drawable.yellow_cake);
+//        imagePathMap.put("Yellow Cake", R.drawable.yellow_cake);
     }
 }

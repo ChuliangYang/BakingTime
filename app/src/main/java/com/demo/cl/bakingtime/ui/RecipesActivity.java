@@ -38,7 +38,6 @@ public class RecipesActivity extends AppCompatActivity implements OnRecipeListRe
         rvRecipe=viewBinding.rvRecipe;
 
         new RecipeListRequest(this).start();
-        //TODO: 9/16/17 没有图片的情况下itemview需要保持一样的尺寸
         rvRecipe.setLayoutManager(new GridLayoutManager(this,getResources().getInteger(R.integer.GridNumber)));
         rvRecipe.setHasFixedSize(true);
     }

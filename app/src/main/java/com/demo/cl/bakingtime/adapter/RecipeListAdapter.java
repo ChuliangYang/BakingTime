@@ -30,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by CL on 9/14/17.
@@ -76,6 +77,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter {
         } else if (holder instanceof RecipeWithoutPictureViewHolder) {
             RecipeWithoutPictureViewHolder recipeWithoutPictureViewHolder= (RecipeWithoutPictureViewHolder) holder;
             recipeWithoutPictureViewHolder.tvRecipeNoPicture.setText(recipeListModel.getRecipeName(position));
+            Timber.e("no picture at %s",position);
         }
     }
 
@@ -118,7 +120,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter {
         public RecipeWithoutPictureViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
+            itemView.setOnClickListener(view -> {
+                Intent intent=new Intent(context, RecipeDetailActivity.class);
+                EventBus.getDefault().removeStickyEvent(EventHelper.RecipesBeanMessage.class);
+                EventBus.getDefault().postSticky(EventHelper.create().buildRecipesBeanMessage((RecipesBean) recipeListModel.get(getAdapterPosition())));
+                context.startActivity(intent);
+            });
         }
     }
 

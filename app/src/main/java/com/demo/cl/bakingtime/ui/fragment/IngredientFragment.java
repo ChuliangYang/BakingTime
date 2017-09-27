@@ -44,7 +44,6 @@ public class IngredientFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Timber.w("fragment created");
         if (savedInstanceState != null) {
             recipesBean= (RecipesBean) savedInstanceState.get("recipesBean");
         } else if (EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class)!=null) {
@@ -62,13 +61,11 @@ public class IngredientFragment extends Fragment {
         }
 
 
-        Timber.w("saveingredientList start");
         Single.create((SingleOnSubscribe<Boolean>) e -> {
             if (recipesBean!=null) {
                 try {
                     SharedPreferencesHelper.saveObject(getContext().getApplicationContext(), Constant.DataKey.SHARED_PREFERENCES_NAME,Constant.DataKey.INGREDIENT_LIST_KEY,recipesBean.getIngredients());
                     SharedPreferencesHelper.saveKeyValue(getContext().getApplicationContext(), Constant.DataKey.SHARED_PREFERENCES_NAME,Constant.DataKey.RECIPE_NAME_KEY,recipesBean.getName());
-                    Timber.w("saveingredientList success");
                     e.onSuccess(true);
                 } catch (Exception e1) {
                     e.onError(e1);
@@ -85,9 +82,8 @@ public class IngredientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.ingredient_page, container, false);
         ButterKnife.bind(this, contentView);
-        rvIngredient.setHasFixedSize(true);
+//        rvIngredient.setHasFixedSize(true);
         rvIngredient.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-
         IngredientAdapter ingredientAdapter=new IngredientAdapter(recipesBean,getContext());
         rvIngredient.setAdapter(ingredientAdapter);
         return contentView;

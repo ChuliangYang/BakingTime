@@ -5,18 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/CardViewTileStyle"
-    app:cardBackgroundColor="?colorPrimary"
     tools:layout_height="100dp"
     tools:context=".ui.RecipesActivity"
+    android:background="@android:color/transparent"
+
     >
-
-    <TextView
-        android:id="@+id/tv_recipe_no_picture"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:paddingLeft="@dimen/recipe_list_padding_left_right"
+        android:paddingRight="@dimen/recipe_list_padding_left_right"
+        android:paddingTop="@dimen/recipe_list_padding_top_bottom"
+        android:paddingBottom="@dimen/recipe_list_padding_top_bottom"
+        >
+    <com.demo.cl.bakingtime.widget.DynamicHeightTextView
+        android:id="@+id/tv_recipe_no_picture"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:background="#D06699CC"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        tools:text="ceshi"
+        android:textColor="@android:color/white"
+        android:textSize="26sp"
+        tools:text="yellow cake"
         />
-
+    </FrameLayout>
 </android.support.v7.widget.CardView>

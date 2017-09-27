@@ -80,27 +80,6 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
             FlagPosition=position;
         }
 
-//        Configuration cf= context.getResources().getConfiguration(); //获取设置的配置信息
-//        int ori = cf.orientation ; //获取屏幕方向
-//        if (ori == cf.ORIENTATION_LANDSCAPE) {
-//            if (position != mCurrentPosition) {
-//                StepDetailPageFragment fragment = new StepDetailPageFragment();
-//                WrapContentViewPager pager = new WrapContentViewPager(context);
-//                if (object instanceof StepDetailPageFragment) {
-//                    fragment = (StepDetailPageFragment) object;
-//                }
-//
-//                if (container instanceof WrapContentViewPager) {
-//                    pager = (WrapContentViewPager) container;
-//                }
-//                if (fragment != null && fragment.getView() != null) {
-//                    mCurrentPosition = position;
-//                    pager.measureCurrentView(fragment.getView());
-//                    fragment.configLandFragmentState((ViewPager) container,position);
-//                }
-//            }
-//        }
-
     }
 
     @Override

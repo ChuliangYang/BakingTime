@@ -63,7 +63,6 @@ public class IngredientListProviderService extends RemoteViewsService {
         @Override
         public RemoteViews getViewAt(int i) {
             RemoteViews rv=new RemoteViews(context.getPackageName(), R.layout.item_widget_ingredient);
-            // TODO: 9/24/17 加上数量
             rv.setTextViewText(R.id.tv_ingredient_name,ingredients.get(i));
             return rv;
         }

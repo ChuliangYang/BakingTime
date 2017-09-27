@@ -60,7 +60,7 @@ public class WidgetService extends IntentService {
                 ArrayList<String> ingredientsName =new ArrayList();
                 for (RecipesBean.IngredientsBean ingredientsBean:
                         ingredientList) {
-                    ingredientsName.add(ingredientsBean.getIngredient());
+                    ingredientsName.add(ingredientsBean.getIngredient()+"  *"+ingredientsBean.getQuantity()+ingredientsBean.getMeasure());
                 }
                 intent.putStringArrayListExtra(Constant.DataKey.INGREDIENT_LIST_KEY,ingredientsName);
                 views.setRemoteAdapter(R.id.lv_ingredient_list, intent);

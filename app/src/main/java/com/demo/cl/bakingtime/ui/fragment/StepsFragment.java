@@ -1,5 +1,6 @@
 package com.demo.cl.bakingtime.ui.fragment;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -62,7 +63,16 @@ public class StepsFragment extends Fragment {
         rvSteps.setLayoutManager(linearLayoutManager);
         StepsAdapter stepsAdapter=new StepsAdapter(recipesBean,getContext());
         rvSteps.setAdapter(stepsAdapter);
-//        rvSteps.setPadding(0,0,0,500);
+
+        Configuration cf= getContext().getResources().getConfiguration(); //获取设置的配置信息
+        int ori = cf.orientation ; //获取屏幕方向
+
+        if (getResources().getBoolean(R.bool.isTablet)&&ori==cf.ORIENTATION_LANDSCAPE) {
+            rvSteps.setPadding(0,0,0,500);
+        }
+
+
+
 
         return contentView;
     }

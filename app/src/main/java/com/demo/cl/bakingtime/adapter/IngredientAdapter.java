@@ -8,6 +8,7 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.demo.cl.bakingtime.R;
 import com.demo.cl.bakingtime.data.RecipesBean;
+import com.demo.cl.bakingtime.helper.DisplayHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,10 +47,18 @@ public class IngredientAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (position==0) {
+            holder.itemView.setPadding(0, DisplayHelper.dip2px(context,8),0,0);
+        }else{
+            holder.itemView.setPadding(0, 0,0,0);
+        }
+        String s=String.format("<html><font color='#000000'><small>%s</small></font>&nbsp;&nbsp;&nbsp;%s</html>",recipesBean.getIngredients().get(position).getQuantity()+recipesBean.getIngredients().get(position).getMeasure(),recipesBean.getIngredients().get(position).getIngredient());
+        Timber.e(s);
         IngredientViewHolder ingredientViewHolder= (IngredientViewHolder) holder;
-        ingredientViewHolder.tvIngredient.setText(recipesBean.getIngredients().get(position).getIngredient());
+        ingredientViewHolder.tvIngredient.setText(Html.fromHtml(s));
+//        ingredientViewHolder.tvIngredient.setText(Html.fromHtml(s)+" "+recipesBean.getIngredients().get(position).getIngredient());
         ingredientViewHolder.cb_ingredient_state.setChecked(recipesBean.getIngredients().get(position).getChecked());
-        // TODO: 9/18/17 加上每个原料的数量
+
     }
 
     @Override

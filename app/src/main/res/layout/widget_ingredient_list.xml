@@ -8,8 +8,11 @@
         android:id="@+id/tv_recipe_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
+        android:padding="5dp"
+        android:textSize="16sp"
         tools:text="roast duck"
         />
 

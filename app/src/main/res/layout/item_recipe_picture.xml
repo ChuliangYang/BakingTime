@@ -6,16 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/CardViewTileStyle"
+    android:background="@android:color/transparent"
     >
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:paddingLeft="@dimen/recipe_list_padding_left_right"
+        android:paddingRight="@dimen/recipe_list_padding_left_right"
+        android:paddingTop="@dimen/recipe_list_padding_top_bottom"
+        android:paddingBottom="@dimen/recipe_list_padding_top_bottom"
+        >
     <com.demo.cl.bakingtime.widget.DynamicHeightImageView
         android:id="@+id/iv_recipe"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         tools:background="@drawable/brownies"
+
         tools:layout_height="wrap_content"
         />
     <LinearLayout

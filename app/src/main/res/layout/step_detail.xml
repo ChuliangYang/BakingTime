@@ -10,6 +10,7 @@
         android:layout_height="?actionBarSize"
         style="?actionBarStyle"
         app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationContentDescription="@string/navigation_content_describe"
         app:titleTextColor="@android:color/white"
         android:background="?colorPrimary"
         android:layout_weight="0"
@@ -25,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:layout_weight="0"
         >
         <ImageView
@@ -34,6 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:layout_marginLeft="5dp"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:fontFamily="@font/alegreya"
             android:layout_toEndOf="@id/iv_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,6 +54,10 @@
 
         <TextView
             android:layout_toStartOf="@id/iv_next"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:fontFamily="@font/alegreya"
+            android:layout_marginRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next"/>
