@@ -10,12 +10,15 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.v7.widget.RecyclerView;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.action.ViewActions.*;
+import static android.support.test.espresso.assertion.ViewAssertions.selectedDescendantsMatch;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 
 import com.demo.cl.bakingtime.R;
@@ -25,17 +28,22 @@ import com.demo.cl.bakingtime.data.RecipesBean;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.text.StringContainsInOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import static android.support.test.runner.lifecycle.Stage.RESUMED;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalToIgnoringWhiteSpace;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -51,7 +59,6 @@ public class MyApplicationTest {
     @Test
     public void recipesActivityTest() {
         rv=mActivityTestRule.getActivity().findViewById(R.id.rv_recipe);
-        mActivityTestRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         try {
             Thread.sleep(4000);
         } catch (InterruptedException e) {
@@ -79,7 +86,7 @@ public class MyApplicationTest {
                 onView(withId(R.id.rv_ingredient)).perform(RecyclerViewActions.scrollToPosition(i));
                 onView(withId(R.id.rv_ingredient)).perform(RecyclerViewActions.actionOnItemAtPosition(i,click()));
                 onView(allOf(withParent(withId(R.id.rv_ingredient)),withAdapterPosition(i))).check(
-                        matches(allOf(hasDescendant(withText(recipesBean.getIngredients().get(i).getIngredient())),
+                        matches(allOf(hasDescendant(withText(stringContainsInOrder(Arrays.asList(recipesBean.getIngredients().get(i).getQuantity()+recipesBean.getIngredients().get(i).getMeasure(),recipesBean.getIngredients().get(i).getIngredient())))),
                                 hasDescendant(allOf(withId(R.id.cb_ingredient_state),isChecked()))
                         )));
 
@@ -252,6 +259,27 @@ public class MyApplicationTest {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+            }
+        };
+    }
+
+    public  Matcher<View> containHtmlPlainText(String htmlText) {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            protected boolean matchesSafely(View item) {
+                if (item instanceof TextView) {
+                    if (((TextView)item).getText().toString().contains(htmlText)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
 
             @Override

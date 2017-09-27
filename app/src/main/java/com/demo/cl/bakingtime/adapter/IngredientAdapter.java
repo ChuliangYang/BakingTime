@@ -53,11 +53,12 @@ public class IngredientAdapter extends RecyclerView.Adapter {
             holder.itemView.setPadding(0, 0,0,0);
         }
         String s=String.format("<html><font color='#000000'><small>%s</small></font>&nbsp;&nbsp;&nbsp;%s</html>",recipesBean.getIngredients().get(position).getQuantity()+recipesBean.getIngredients().get(position).getMeasure(),recipesBean.getIngredients().get(position).getIngredient());
-        Timber.e(s);
         IngredientViewHolder ingredientViewHolder= (IngredientViewHolder) holder;
         ingredientViewHolder.tvIngredient.setText(Html.fromHtml(s));
 //        ingredientViewHolder.tvIngredient.setText(Html.fromHtml(s)+" "+recipesBean.getIngredients().get(position).getIngredient());
         ingredientViewHolder.cb_ingredient_state.setChecked(recipesBean.getIngredients().get(position).getChecked());
+
+
 
     }
 
