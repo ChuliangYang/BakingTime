@@ -26,15 +26,12 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
     OnStepNavigation onStepNavigation;
     Context context;
     private OnScroll onScroll;
-    private int mCurrentPosition = -1;
 
     private int FlagPosition = -1;
 
     public StepDetailPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
-//        onScroll= EventBus.getDefault().getStickyEvent(EventHelper.ScrollMessage.class).getOnScroll();
-
     }
 
     @Override
@@ -44,9 +41,8 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
             Configuration cf = context.getResources().getConfiguration(); //获取设置的配置信息
             int ori = cf.orientation; //获取屏幕方向
             if (ori == cf.ORIENTATION_LANDSCAPE) {
-                if (position != mCurrentPosition) {
-                    StepDetailPageFragment fragment = new StepDetailPageFragment();
-                    WrapContentViewPager pager = new WrapContentViewPager(context);
+                    StepDetailPageFragment fragment = null;
+                    WrapContentViewPager pager = null;
                     if (object instanceof StepDetailPageFragment) {
                         fragment = (StepDetailPageFragment) object;
                     }
@@ -54,16 +50,13 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
                     if (container instanceof WrapContentViewPager) {
                         pager = (WrapContentViewPager) container;
                     }
-                    if (fragment != null && fragment.getView() != null) {
-                        mCurrentPosition = position;
-                        pager.measureCurrentView(fragment.getView());
-                        fragment.configLandFragmentState((ViewPager) container, position);
-                    } else {
-                        mCurrentPosition = position;
-//                            pager.measureCurrentView(fragment.getView());
+
+                    if (fragment!=null&&pager!=null) {
+                        if (fragment.getView() != null) {
+                            pager.measureCurrentView(fragment.getView());
+                        }
                         fragment.configLandFragmentState((ViewPager) container, position);
                     }
-                }
             } else {
                 if (object instanceof StepDetailPageFragment) {
                     StepDetailPageFragment fragment = (StepDetailPageFragment) object;

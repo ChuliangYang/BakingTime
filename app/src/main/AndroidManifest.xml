@@ -29,7 +29,7 @@
             android:name=".ui.StepDetailActivity"
             android:launchMode="singleTop" />
 
-        <receiver android:name=".NewAppWidget">
+        <receiver android:name=".IngredientWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

@@ -25,15 +25,15 @@ public class StepDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_whole_fragment);
         ButterKnife.bind(this);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (savedInstanceState != null && getSupportFragmentManager().findFragmentByTag("StepDetailFragment") != null) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fl_content, getSupportFragmentManager().findFragmentByTag("StepDetailFragment"));
-            fragmentTransaction.commit();
         } else {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fl_content, new StepDetailFragment(), "StepDetailFragment");
-            fragmentTransaction.commit();
         }
+        fragmentTransaction.commit();
+
 
     }
 }

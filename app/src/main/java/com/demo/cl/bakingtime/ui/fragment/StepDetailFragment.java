@@ -46,7 +46,6 @@ public class StepDetailFragment extends Fragment implements OnScroll {
     boolean FlagOnce = true;
     private EventHelper.StepsBeanMessage stepsBeanMessage;
     private int currentPosition;
-    private int scroll_state;
 
 
     @Override
@@ -59,9 +58,9 @@ public class StepDetailFragment extends Fragment implements OnScroll {
             stepsBeanMessage = EventBus.getDefault().getStickyEvent(EventHelper.StepsBeanMessage.class);
             currentPosition = stepsBeanMessage.getCurrent_position();
         }
-        Bundle bundle = new Bundle();
 
         if (stepsBeanMessage != null) {
+            Bundle bundle = new Bundle();
             bundle.putParcelable("stepsBeanMessage", stepsBeanMessage);
             setArguments(bundle);
         } else if (getArguments() != null && getArguments().get("stepsBeanMessage") != null) {
@@ -71,15 +70,6 @@ public class StepDetailFragment extends Fragment implements OnScroll {
         }
 
         PlayerHelper.getInstance().initPlayer(getContext());
-
-//        if (stepsBeanMessage != null) {
-//            bundle.putParcelable("stepsBeanMessage", stepsBeanMessage);
-//            setArguments(bundle);
-//        } else if (getArguments()!=null&&getArguments().get("stepsBeanMessage") != null) {
-//            stepsBeanMessage = (EventHelper.StepsBeanMessage) getArguments().get("stepsBeanMessage");
-//        } else {
-//            stepsBeanMessage=EventHelper.create().buildStepsBeanMessage(0,new RecipesBean());
-//        }
 
 
     }
@@ -242,10 +232,8 @@ public class StepDetailFragment extends Fragment implements OnScroll {
     public void onDestroy() {
         if (getResources().getBoolean(R.bool.isTablet)) {
             PlayerHelper.getInstance().stopPlayer();
-            Timber.w("isTablet and stop player");
         } else {
             PlayerHelper.getInstance().releasePlayer();
-            Timber.w("not Tablet and release player");
         }
         super.onDestroy();
 

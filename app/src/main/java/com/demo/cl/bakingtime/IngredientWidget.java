@@ -12,7 +12,7 @@ import timber.log.Timber;
 /**
  * Implementation of App Widget functionality.
  */
-public class NewAppWidget extends AppWidgetProvider {
+public class IngredientWidget extends AppWidgetProvider {
 
 
     @Override

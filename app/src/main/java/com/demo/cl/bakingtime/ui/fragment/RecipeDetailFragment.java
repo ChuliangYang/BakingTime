@@ -37,7 +37,7 @@ public class RecipeDetailFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+//        setRetainInstance(true);
         if (savedInstanceState != null) {
             recipesBean = (RecipesBean) savedInstanceState.get("recipesBean");
         } else if (EventBus.getDefault().getStickyEvent(EventHelper.RecipesBeanMessage.class) != null) {

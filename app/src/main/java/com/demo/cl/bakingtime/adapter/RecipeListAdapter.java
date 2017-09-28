@@ -59,7 +59,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter {
             RecipeWithPictureViewHolder recipeWithPictureViewHolder = (RecipeWithPictureViewHolder) holder;
             recipeWithPictureViewHolder.tvRecipe.setText(recipeListModel.getRecipeName(position));
             if (recipeListModel.getPictureType(position) == RecipeListModel.LOCAL_PICTURE) {
-                //noinspection ConstantConditions
                 recipeWithPictureViewHolder.ivRecipe.setImageResource((Integer) recipeListModel.getRecipePicture(position));
             } else if (recipeListModel.getPictureType(position) == RecipeListModel.NETWORK_PICTURE) {
                 Glide.with(context)

@@ -38,7 +38,7 @@ public class WrapContentViewPager extends ViewPager {
 
     public void measureCurrentView(View currentView) {
         mCurrentView = currentView;
-        requestLayout();
+        forceLayout();
     }
 
 }

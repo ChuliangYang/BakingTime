@@ -128,7 +128,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
                     player_view_land.setVisibility(View.GONE);
                 } else {
                     if (!isCache) {
-                        initializePlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
+                        configPlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
                     }
                     RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) player_view_land.getLayoutParams();
                     layoutParams.height = getResources().getDisplayMetrics().heightPixels - DisplayHelper.getStatusBarHeight(getContext());
@@ -160,7 +160,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
                     player_view_land.setVisibility(View.GONE);
                 } else {
                     if (!isCache) {
-                        initializePlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
+                        configPlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
                     }
                     RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) player_view_land.getLayoutParams();
                     layoutParams.height = (getResources().getDisplayMetrics().heightPixels - DisplayHelper.getStatusBarHeight(getContext())) * 6 / 10;
@@ -208,7 +208,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
                 mPlayerView.setVisibility(View.GONE);
             } else {
                 if (!isCache) {
-                    initializePlayer(Uri.parse(stepsBean.getVideoURL()), mPlayerView);
+                    configPlayer(Uri.parse(stepsBean.getVideoURL()), mPlayerView);
                 }
             }
         }
@@ -217,7 +217,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
     }
 
 
-    private void initializePlayer(Uri mediaUri, SimpleExoPlayerView simpleExoPlayerView) {
+    private void configPlayer(Uri mediaUri, SimpleExoPlayerView simpleExoPlayerView) {
         if (PlayerHelper.getInstance().getPlayer(getContext()) instanceof SimpleExoPlayer) {
             mExoPlayer = (SimpleExoPlayer) PlayerHelper.getInstance().getPlayer(getContext());
         }
@@ -324,7 +324,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
                 if (!getResources().getBoolean(R.bool.isTablet)) {
                     viewPager.post(() -> onScroll.setScrollY(toolbarSize));
                 }
-                initializePlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
+                configPlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
             }
         } else {
             isCache = false;
@@ -337,7 +337,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
 
         if (createdView) {
             if (mPlayerView.getVisibility() == View.VISIBLE) {
-                initializePlayer(Uri.parse(stepsBean.getVideoURL()), mPlayerView);
+                configPlayer(Uri.parse(stepsBean.getVideoURL()), mPlayerView);
             }
         } else {
             isCache = false;

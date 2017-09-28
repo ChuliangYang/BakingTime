@@ -10,12 +10,9 @@ import com.demo.cl.bakingtime.data.Constant;
 
 import java.util.List;
 
-import timber.log.Timber;
-
 public class IngredientListProviderService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        Timber.e("RemoteViewsFactory");
         return new IngredientListFactory(getApplicationContext(), intent);
     }
 

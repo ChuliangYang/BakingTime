@@ -23,20 +23,13 @@ public class SharedPreferencesHelper {
 
     public static void saveObject(Context context, String preferenceName, String key, List<?> object) throws Exception {
         if (object instanceof Serializable) {
-            Timber.w("object can save,saving...");
             SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceName, context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try {
-//                ObjectOutputStream oos = new ObjectOutputStream(baos);
-//                oos.writeObject(object);//把对象写到流里
-//                String temp = new String(Base64.encode(baos.toByteArray(), Base64.DEFAULT));
                 editor.putString(key, listToString(object));
                 editor.commit();
-                Timber.w("object is saved");
             } catch (IOException e) {
                 e.printStackTrace();
-                Timber.w("iO error");
             }
         } else {
             throw new Exception("Object must implements Serializable");
@@ -51,23 +44,9 @@ public class SharedPreferencesHelper {
             return StringToList(temp);
         } catch (IOException e) {
             e.printStackTrace();
-            Timber.w("error");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            Timber.w("error");
         }
-//        ByteArrayInputStream bais =  new ByteArrayInputStream(temp.getBytes());
-//        Object object = null;
-//        try {
-//            ObjectInputStream ois = new ObjectInputStream(bais);
-//            object = (Object) ois.readObject();
-//            Timber.w("object done read");
-//        } catch (IOException e) {
-//            Timber.w("iO error");
-//        }catch(ClassNotFoundException e1) {
-//            Timber.w("ClassNotFoundException");
-//        }
-//        return object;
 
         return null;
 
@@ -90,7 +69,6 @@ public class SharedPreferencesHelper {
         return listString;
     }
 
-    @SuppressWarnings("unchecked")
     public static List<?> StringToList(String listString) throws StreamCorruptedException, IOException,
             ClassNotFoundException {
         byte[] mobileBytes = Base64.decode(listString.getBytes(),
