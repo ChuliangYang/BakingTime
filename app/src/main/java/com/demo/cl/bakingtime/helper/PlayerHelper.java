@@ -1,7 +1,9 @@
 package com.demo.cl.bakingtime.helper;
 
 import android.content.Context;
+import android.util.Pair;
 
+import com.demo.cl.bakingtime.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -23,9 +25,10 @@ public class PlayerHelper {
     private HashMap<Integer, Long> currentProgress = new HashMap();
 
 
-    private boolean KeepStateFlag = false;
+    private boolean StateFlag = false;
 
     private Context context;
+
 
     private PlayerHelper() {
 
@@ -51,14 +54,14 @@ public class PlayerHelper {
             simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
             this.context = context;
         } else {
-            simpleExoPlayer.stop();
+            simpleExoPlayer.setPlayWhenReady(false);
         }
         return simpleExoPlayer;
 
     }
 
     public void releasePlayer() {
-        if (!KeepStateFlag) {
+        if (!StateFlag) {
             if (simpleExoPlayer != null) {
                 simpleExoPlayer.release();
                 simpleExoPlayer = null;
@@ -68,7 +71,7 @@ public class PlayerHelper {
     }
 
     public void startPlayer() {
-        if (simpleExoPlayer != null) {
+        if (simpleExoPlayer != null&&!simpleExoPlayer.getPlayWhenReady()) {
             simpleExoPlayer.setPlayWhenReady(true);
         }
     }
@@ -80,7 +83,7 @@ public class PlayerHelper {
     }
 
     public void pausePlayer() {
-        if (simpleExoPlayer != null) {
+        if (simpleExoPlayer != null&&simpleExoPlayer.getPlayWhenReady()) {
             simpleExoPlayer.setPlayWhenReady(false);
         }
     }
@@ -101,7 +104,7 @@ public class PlayerHelper {
         }
     }
 
-    public void setKeepStateFlag(boolean keepStateFlag) {
-        KeepStateFlag = keepStateFlag;
+    public void setStateFlag(boolean stateFlag) {
+        StateFlag = stateFlag;
     }
 }

@@ -2,6 +2,7 @@ package com.demo.cl.bakingtime.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -82,8 +83,27 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (isTablet) {
             EventBus.getDefault().register(this);
         }
-        if (getResources().getBoolean(R.bool.isTablet)) {
+        if (isTablet) {
             PlayerHelper.getInstance().initPlayer(getApplicationContext());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isTablet) {
+            PlayerHelper.getInstance().startPlayer();
+        }
+
+    }
+
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (isTablet) {
+            PlayerHelper.getInstance().pausePlayer();
         }
     }
 
@@ -93,14 +113,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (isTablet) {
             EventBus.getDefault().unregister(this);
         }
-        if (getResources().getBoolean(R.bool.isTablet)) {
+        if (isTablet) {
             PlayerHelper.getInstance().releasePlayer();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -112,5 +127,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
     }
 
-    ;
+
+
+
+
+
 }

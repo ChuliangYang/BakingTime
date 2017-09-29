@@ -101,5 +101,13 @@ public class StepDetailPagerAdapter extends FragmentStatePagerAdapter {
         this.onStepNavigation = onStepNavigation;
     }
 
+    public int getFlagPosition() {
+        return FlagPosition;
+    }
+
+    public void setFlagPosition(int flagPosition) {
+        FlagPosition = flagPosition;
+    }
+
 
 }

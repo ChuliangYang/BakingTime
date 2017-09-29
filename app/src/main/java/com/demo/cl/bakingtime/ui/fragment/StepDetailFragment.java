@@ -24,8 +24,6 @@ import com.demo.cl.bakingtime.widget.WrapContentViewPager;
 
 import org.greenrobot.eventbus.EventBus;
 
-import timber.log.Timber;
-
 import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 import static android.view.View.FOCUS_LEFT;
 import static android.view.View.FOCUS_RIGHT;
@@ -46,6 +44,7 @@ public class StepDetailFragment extends Fragment implements OnScroll {
     boolean FlagOnce = true;
     private EventHelper.StepsBeanMessage stepsBeanMessage;
     private int currentPosition;
+    private StepDetailPagerAdapter stepDetailPagerAdapter;
 
 
     @Override
@@ -149,7 +148,7 @@ public class StepDetailFragment extends Fragment implements OnScroll {
                 rlNavigate.setVisibility(View.GONE);
             }
 
-            StepDetailPagerAdapter stepDetailPagerAdapter = new StepDetailPagerAdapter(getChildFragmentManager(), getContext());
+            stepDetailPagerAdapter = new StepDetailPagerAdapter(getChildFragmentManager(), getContext());
             stepDetailPagerAdapter.setRecipesBean(stepsBeanMessage.getRecipesBean());
             vpStepDetail.setAdapter(stepDetailPagerAdapter);
             vpStepDetail.setCurrentItem(currentPosition, false);
@@ -195,6 +194,7 @@ public class StepDetailFragment extends Fragment implements OnScroll {
                         if (FlagOnce) {
                             PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
                             PlayerHelper.getInstance().stopPlayer();
+//                            stepDetailPagerAdapter.setFlagPosition(-1);
                             FlagOnce = false;
                         }
                     } else {
@@ -212,45 +212,42 @@ public class StepDetailFragment extends Fragment implements OnScroll {
         outState.putParcelable("stepsBeanMessage", stepsBeanMessage);
         outState.putInt("currentPosition", currentPosition);
         PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
-        PlayerHelper.getInstance().setKeepStateFlag(true);
+        PlayerHelper.getInstance().setStateFlag(true);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        PlayerHelper.getInstance().setKeepStateFlag(false);
+        PlayerHelper.getInstance().setStateFlag(false);
         super.onViewStateRestored(savedInstanceState);
     }
 
+
     @Override
     public void onResume() {
-        PlayerHelper.getInstance().startPlayer();
         super.onResume();
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            PlayerHelper.getInstance().startPlayer();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
-        PlayerHelper.getInstance().pausePlayer();
+        if (!getResources().getBoolean(R.bool.isTablet)) {
+            PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
+            PlayerHelper.getInstance().pausePlayer();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (getResources().getBoolean(R.bool.isTablet)) {
-            //tablet release handle by parent activity
-            PlayerHelper.getInstance().stopPlayer();
-        } else {
+        if (!getResources().getBoolean(R.bool.isTablet)) {
             PlayerHelper.getInstance().releasePlayer();
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
 
     @Override
     public void setScrollX(int x) {

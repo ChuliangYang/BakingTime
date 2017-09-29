@@ -429,7 +429,6 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
         super.onSaveInstanceState(outState);
     }
 
-
 }
 
 
