@@ -67,9 +67,21 @@ public class PlayerHelper {
         }
     }
 
+    public void startPlayer() {
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setPlayWhenReady(true);
+        }
+    }
+
     public void stopPlayer() {
         if (simpleExoPlayer != null) {
             simpleExoPlayer.stop();
+        }
+    }
+
+    public void pausePlayer() {
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setPlayWhenReady(false);
         }
     }
 

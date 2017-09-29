@@ -223,18 +223,31 @@ public class StepDetailFragment extends Fragment implements OnScroll {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        PlayerHelper.getInstance().stopPlayer();
+    public void onResume() {
+        PlayerHelper.getInstance().startPlayer();
+        super.onResume();
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
+        super.onPause();
+        PlayerHelper.getInstance().putProgress(currentPosition, PlayerHelper.getInstance().getCurrentVideoProgress());
+        PlayerHelper.getInstance().pausePlayer();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         if (getResources().getBoolean(R.bool.isTablet)) {
+            //tablet release handle by parent activity
             PlayerHelper.getInstance().stopPlayer();
         } else {
             PlayerHelper.getInstance().releasePlayer();
         }
+    }
+
+    @Override
+    public void onDestroy() {
         super.onDestroy();
 
     }

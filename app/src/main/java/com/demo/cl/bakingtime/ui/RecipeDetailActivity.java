@@ -82,6 +82,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (isTablet) {
             EventBus.getDefault().register(this);
         }
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            PlayerHelper.getInstance().initPlayer(getApplicationContext());
+        }
     }
 
     @Override
@@ -90,13 +93,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (isTablet) {
             EventBus.getDefault().unregister(this);
         }
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            PlayerHelper.getInstance().releasePlayer();
+        }
     }
 
     @Override
     protected void onDestroy() {
-        if (getResources().getBoolean(R.bool.isTablet)) {
-            PlayerHelper.getInstance().releasePlayer();
-        }
         super.onDestroy();
     }
 
