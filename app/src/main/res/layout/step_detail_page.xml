@@ -5,18 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:id="@+id/fl_player"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         app:resize_mode="fill" />
 
+        <ImageView
+            android:id="@+id/iv_thumbnail"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+    </FrameLayout>
     <ScrollView
         android:id="@+id/sv_step_describe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/player_view"
-        tools:background="@android:color/holo_blue_bright">
+        android:layout_below="@id/fl_player"
+        >
 
         <TextView
             android:id="@+id/tv_describe"

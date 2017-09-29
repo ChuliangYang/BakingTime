@@ -1,6 +1,9 @@
 package com.demo.cl.bakingtime.ui.fragment;
 
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +14,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -37,6 +42,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,6 +66,8 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
     ImageView iv_next_land;
     RelativeLayout content_step_detail;
     RelativeLayout rl_navigation;
+    FrameLayout fl_player;
+    ImageView iv_thumbnail;
     private RecipesBean.StepsBean stepsBean;
     private EventHelper.StepsBeanMessage stepsBeanMessage;
     private OnStepNavigation onStepNavigation;
@@ -69,6 +78,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
     private Boolean isCache = true;
     private int position;
     private WrapContentViewPager viewPager;
+    private Bitmap thumnail;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +103,29 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
             stepsBeanMessage = EventHelper.create().buildStepsBeanMessage(0, new RecipesBean());
         }
 
+
+        if (stepsBean!=null&&!TextUtils.isEmpty(stepsBean.getThumbnailURL())) {
+            Picasso.with(getContext()).load(stepsBean.getThumbnailURL()).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    thumnail=bitmap;
+                    if (iv_thumbnail!=null) {
+                        iv_thumbnail.setImageBitmap(thumnail);
+                    }
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            });
+        }
+
     }
 
     @Nullable
@@ -111,6 +144,8 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
             iv_next_land = contentView.findViewById(R.id.iv_next_land);
             content_step_detail = contentView.findViewById(R.id.content_step_detail);
             rl_navigation = contentView.findViewById(R.id.rl_navigation);
+            fl_player = contentView.findViewById(R.id.fl_player);
+            iv_thumbnail = contentView.findViewById(R.id.iv_thumbnail);
 
             if (!getResources().getBoolean(R.bool.isTablet)) {
                 tb_step_detail_land.setTitle(stepsBeanMessage.getRecipesBean().getName());
@@ -126,14 +161,20 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
 
                 if (TextUtils.isEmpty(stepsBean.getVideoURL())) {
                     player_view_land.setVisibility(View.GONE);
+                    if (thumnail!=null) {
+                        iv_thumbnail.setVisibility(View.VISIBLE);
+                        iv_thumbnail.setImageBitmap(thumnail);
+                    }else {
+                        fl_player.setVisibility(View.GONE);
+                    }
                 } else {
                     if (!isCache) {
                         configPlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
                     }
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) player_view_land.getLayoutParams();
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fl_player.getLayoutParams();
                     layoutParams.height = getResources().getDisplayMetrics().heightPixels - DisplayHelper.getStatusBarHeight(getContext());
                     layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-                    player_view_land.setLayoutParams(layoutParams);
+                    fl_player.setLayoutParams(layoutParams);
 
                 }
 
@@ -151,21 +192,34 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
 
                 if (viewPager != null) {
                     viewPager.measureCurrentView(contentView);
-                    viewPager.post(() -> onScroll.setScrollY(toolbarSize));
+                    if (player_view_land.getVisibility()==View.VISIBLE) {
+                        viewPager.post(() -> onScroll.setScrollY(toolbarSize));
+                    }
                 }
             } else {
                 tb_step_detail_land.setVisibility(View.GONE);
 
                 if (TextUtils.isEmpty(stepsBean.getVideoURL())) {
                     player_view_land.setVisibility(View.GONE);
+                    if (thumnail!=null) {
+                        iv_thumbnail.setVisibility(View.VISIBLE);
+                        iv_thumbnail.setImageBitmap(thumnail);
+                    }else {
+                        fl_player.setVisibility(View.GONE);
+                    }
+
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fl_player.getLayoutParams();
+                    layoutParams.height = (getResources().getDisplayMetrics().heightPixels - DisplayHelper.getStatusBarHeight(getContext())) * 1 / 2;
+                    layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+                    fl_player.setLayoutParams(layoutParams);
                 } else {
                     if (!isCache) {
                         configPlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
                     }
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) player_view_land.getLayoutParams();
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fl_player.getLayoutParams();
                     layoutParams.height = (getResources().getDisplayMetrics().heightPixels - DisplayHelper.getStatusBarHeight(getContext())) * 6 / 10;
                     layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-                    player_view_land.setLayoutParams(layoutParams);
+                    fl_player.setLayoutParams(layoutParams);
 
 
                 }
@@ -194,23 +248,44 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
             mPlayerView = contentView.findViewById(R.id.player_view);
             tvDescribe = contentView.findViewById(R.id.tv_describe);
             svStepDescribe = contentView.findViewById(R.id.sv_step_describe);
+            fl_player = contentView.findViewById(R.id.fl_player);
+            iv_thumbnail = contentView.findViewById(R.id.iv_thumbnail);
 
-            if (getResources().getBoolean(R.bool.isTablet)) {
-                mPlayerView.post(() -> {
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mPlayerView.getLayoutParams();
-                    layoutParams.height = mPlayerView.getWidth() / 3 * 2;
+//            if (getResources().getBoolean(R.bool.isTablet)) {
+//                fl_player.post(() -> {
+//                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fl_player.getLayoutParams();
+//                    layoutParams.height = fl_player.getWidth() / 3 * 2;
+//                    layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+//                    fl_player.setLayoutParams(layoutParams);
+//                });
+//            } else {
+
+
+                contentView.post(() -> {
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) fl_player.getLayoutParams();
+                    layoutParams.height = fl_player.getWidth() /3*2;
                     layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-                    mPlayerView.setLayoutParams(layoutParams);
+                    fl_player.setLayoutParams(layoutParams);
                 });
-            }
+
+
+//            }
             tvDescribe.setText(stepsBean.getDescription());
             if (TextUtils.isEmpty(stepsBean.getVideoURL())) {
                 mPlayerView.setVisibility(View.GONE);
+                if (thumnail != null) {
+                    iv_thumbnail.setVisibility(View.VISIBLE);
+                    iv_thumbnail.setImageBitmap(thumnail);
+
+                } else {
+                    fl_player.setVisibility(View.GONE);
+                }
             } else {
                 if (!isCache) {
                     configPlayer(Uri.parse(stepsBean.getVideoURL()), mPlayerView);
                 }
             }
+
         }
         createdView = true;
         return contentView;
@@ -225,6 +300,7 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
         mExoPlayer.stop();
 //        }
         simpleExoPlayerView.setPlayer(mExoPlayer);
+        simpleExoPlayerView.setUseArtwork(false);
         // Set the ExoPlayer.EventListener to this activity.
         mExoPlayer.addListener(this);
         // Prepare the MediaSource.使用uri定位媒体资源
@@ -325,6 +401,8 @@ public class StepDetailPageFragment extends Fragment implements ExoPlayer.EventL
                     viewPager.post(() -> onScroll.setScrollY(toolbarSize));
                 }
                 configPlayer(Uri.parse(stepsBean.getVideoURL()), player_view_land);
+            }else{
+                onScroll.setScrollY(0);
             }
         } else {
             isCache = false;

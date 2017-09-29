@@ -38,12 +38,14 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.runner.lifecycle.Stage.RESUMED;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.stringContainsInOrder;
 
@@ -117,9 +119,9 @@ public class MyApplicationTest {
 
 
                 if (!TextUtils.isEmpty(stepsBean.getVideoURL())) {
-                    onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(isDisplayed()));
+                    onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(isDisplayed()));
                 } else {
-                    onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(not(isDisplayed())));
+                    onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(not(isDisplayed())));
                 }
 
                 onView(allOf(withId(R.id.tv_describe), withParent(isDisplayed()))).check(matches(withText(stepsBean.getDescription())));
@@ -150,9 +152,9 @@ public class MyApplicationTest {
                         }
 
                         if (!TextUtils.isEmpty(recipesBeanList.get(position).getSteps().get(currentPosition).getVideoURL())) {
-                            onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(isDisplayed()));
+                            onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(isDisplayed()));
                         } else {
-                            onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(not(isDisplayed())));
+                            onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(not(isDisplayed())));
                         }
 
                         onView(allOf(withId(R.id.tv_describe), withParent(isDisplayed()))).check(matches(withText(recipesBeanList.get(position).getSteps().get(currentPosition).getDescription())));
@@ -176,9 +178,9 @@ public class MyApplicationTest {
                         }
 
                         if (!TextUtils.isEmpty(recipesBeanList.get(position).getSteps().get(currentPosition).getVideoURL())) {
-                            onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(isDisplayed()));
+                            onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(isDisplayed()));
                         } else {
-                            onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(not(isDisplayed())));
+                            onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(not(isDisplayed())));
                         }
 
                         onView(allOf(withId(R.id.tv_describe), withParent(isDisplayed()))).check(matches(withText(recipesBeanList.get(position).getSteps().get(currentPosition).getDescription())));
@@ -205,9 +207,9 @@ public class MyApplicationTest {
                         }
 
                         if (!TextUtils.isEmpty(recipesBeanList.get(position).getSteps().get(currentPosition).getVideoURL())) {
-                            onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(isDisplayed()));
+                            onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(isDisplayed()));
                         } else {
-                            onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(not(isDisplayed())));
+                            onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(not(isDisplayed())));
                         }
 
                         onView(allOf(withId(R.id.tv_describe), withParent(isDisplayed()))).check(matches(withText(recipesBeanList.get(position).getSteps().get(currentPosition).getDescription())));
@@ -230,9 +232,9 @@ public class MyApplicationTest {
                         }
 
                         if (!TextUtils.isEmpty(recipesBeanList.get(position).getSteps().get(currentPosition).getVideoURL())) {
-                            onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(isDisplayed()));
+                            onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(isDisplayed()));
                         } else {
-                            onView(allOf(withId(R.id.player_view), withParent(isDisplayed()))).check(matches(not(isDisplayed())));
+                            onView(allOf(withId(R.id.player_view), isDescendantOfA(allOf(withClassName(endsWith("RelativeLayout")),isDisplayed())))).check(matches(not(isDisplayed())));
                         }
 
                         onView(allOf(withId(R.id.tv_describe), withParent(isDisplayed()))).check(matches(withText(recipesBeanList.get(position).getSteps().get(currentPosition).getDescription())));

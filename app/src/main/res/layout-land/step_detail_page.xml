@@ -13,19 +13,30 @@
         android:background="?colorPrimary"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:titleTextColor="@android:color/white" />
-
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/player_view_land"
+    <FrameLayout
+        android:id="@+id/fl_player"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@+id/tb_step_detail_land"
+        >
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/player_view_land"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:resize_mode="fill" />
 
+        <ImageView
+            android:id="@+id/iv_thumbnail"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+    </FrameLayout>
     <TextView
         android:id="@+id/tv_describe_land"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/player_view_land"
+        android:layout_below="@+id/fl_player"
         android:layout_marginBottom="100dp"
         android:fontFamily="@font/alegreya"
         android:paddingLeft="15dp"
