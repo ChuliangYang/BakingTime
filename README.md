@@ -13,6 +13,8 @@ It will display recipe list. You can select a recipe and see video-guided steps 
 <img src="../master/read_me_pictures/phone_rotate.gif" alt="alt text" height="611">
 <img src="../master/read_me_pictures/tablet.gif" alt="alt text"  height="611">
 <img src="../master/read_me_pictures/tablet_rotate.gif" alt="alt text"  height="611">
+
+### Screen Widget
 <img src="../master/read_me_pictures/widget.png" alt="alt text"  height="611">
 
 
