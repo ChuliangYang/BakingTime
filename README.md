@@ -4,6 +4,7 @@ It will display recipe list. You can select a recipe and see video-guided steps 
 * Use Exoplayer to display videos.
 * Use Fragments to create a responsive design that works on phones and tablets when playing video.
 * Use Master Detail Flow to display recipe steps and navigation between them.
+* Use sharedPreference to persist data
 * Save player state when rotate
 * Screen Widget that displays ingredient list for desired recipe
 * Use Espresso to test aspects of the UI
