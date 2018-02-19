@@ -1,63 +1,26 @@
 # BakingTime
-Project Overview
-You will productionize an app, taking it from a functional state to a production-ready state. This will involve finding and handling error cases, adding accessibility features, allowing for localization, adding a widget, and adding a library.
+It will display recipe list. You can select a recipe and see video-guided steps for how to complete it. Demonstrate how to play video and how to use fragments to create a responsive design that works on phones and tablets and handle rotation properly.
+## Feature
+* Use Exoplayer to display videos.
+* Use Fragments to create a responsive design that works on phones and tablets when playing video.
+* Use Master Detail Flow to display recipe steps and navigation between them.
+* Save player state when rotate
+* Screen Widget that displays ingredient list for desired recipe
+* Use Espresso to test aspects of the UI
+## Screen
+<img src="../master/read_me_pictures/phone.gif" alt="alt text" width="348" height="611">
+<img src="../master/read_me_pictures/phone_rotate.gif" alt="alt text" height="611">
+<img src="../master/read_me_pictures/tablet.gif" alt="alt text"  height="611">
+<img src="../master/read_me_pictures/tablet_rotate.gif" alt="alt text"  height="611">
 
-Why this Project?
-As a working Android developer, you often have to create and implement apps where you are responsible for designing and planning the steps you need to take to create a production-ready app. Unlike Popular Movies where we gave you an implementation guide, it will be up to you to figure things out for the Baking App.
+## Libraries
+* ExoPlayer
+* RxJave
+* Okhttp
+* Picasso
+* EventBus
+* ButterKnife
+* Timber
+* Espresso
 
-What Will I Learn?
-In this project you will:
 
-Use MediaPlayer/Exoplayer to display videos.
-Handle error cases in Android.
-Add a widget to your app experience.
-Leverage a third-party library in your app.
-Use Fragments to create a responsive design that works on phones and tablets.
-App Description
-Your task is to create a Android Baking App that will allow Udacity’s resident baker-in-chief, Miriam, to share her recipes with the world. You will create an app that will allow a user to select a recipe and see video-guided steps for how to complete it.
-
-The recipe listing is located here.
-
-The JSON file contains the recipes' instructions, ingredients, videos and images you will need to complete this project. Don’t assume that all steps of the recipe have a video. Some may have a video, an image, or no visual media at all.
-
-One of the skills you will demonstrate in this project is how to handle unexpected input in your data -- professional developers often cannot expect polished JSON data when building an app.
-
-General App Usage
-
-CRITERIA
-MEETS SPECIFICATIONS
-Display recipes
-
-App should display recipes from provided network resource.
-
-App Navigation
-
-App should allow navigation between individual recipes and recipe steps.
-
-Utilization of RecyclerView
-
-App uses RecyclerView and can handle recipe steps that include videos or images.
-
-App conforms to common standards found in the Android Nanodegree General Project Guidelines.
-
-App conforms to common standards found in the Android Nanodegree General Project Guidelines.
-
-Components and Libraries
-
-CRITERIA
-
-Application uses Master Detail Flow to display recipe steps and navigation between them.
-
-Application uses player to display videos.
-
-Proper utilization of video assets
-
-Application should properly retrieve media assets from the provided network links. It should properly handle network requests.
-
-Application makes use of Espresso to test aspects of the UI.
-
-Application sensibly utilizes a third-party library to enhance the app's features. That could be helper library to interface with ContentProviders if you choose to store the recipes, a UI binding library to avoid writing findViewById a bunch of times, or something similar.
-
-Application has a companion homescreen widget.
-
-Widget displays ingredient list for desired recipe.
