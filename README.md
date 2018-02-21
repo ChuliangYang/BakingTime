@@ -1,5 +1,5 @@
 # BakingTime
-It will display recipe list. You can select a recipe and see video-guided steps for how to complete it. Demonstrate how to play video and how to use fragments to create a responsive design that works on phones and tablets and handle rotation properly.
+It will display a recipe list. You can select a recipe and see video-guided steps.Use Exoplayer to play video ,use fragments to create a responsive design that works on phones and tablets and keep state during rotation.
 ## Feature
 * Use Exoplayer to display videos.
 * Use Fragments to create a responsive design that works on phones and tablets when playing video.
